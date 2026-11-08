@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>切片入門：看懂 0.20mm Standard｜A竹 3D列印講義庫</title>
+  <meta name="description" content="從 Bambu Studio 官方預設檔認識層高、牆、頂底層和填充，知道什麼時候該改。">
+  <meta name="theme-color" content="#315E43">
+  <link rel="icon" href="../../assets/img/favicon.png">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body data-lesson="03-slicing-basics">
+  <a class="skip-link" href="#main">跳到主要內容</a>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="../../"><img src="../../assets/img/logo.png" alt="" width="40" height="40"><span>A竹 3D列印講義庫<small>A竹's 3D列印實驗室</small></span></a>
+      <nav class="site-nav" aria-label="主要導覽">
+        <a href="../../#lessons">講義列表</a>
+        <a href="../../#how">使用方式</a>
+        <a href="https://blind-us.github.io/azul-3dlab/" rel="noopener">作品與客製</a>
+      </nav>
+    </div>
+    <div class="progress-bar" aria-hidden="true"></div>
+  </header>
+
+  <main id="main" class="container">
+    <header class="lesson-hero">
+      <p class="breadcrumb"><a href="../../">講義庫</a> ／ <span data-lesson-no></span></p>
+      <h1>切片入門：看懂 0.20mm Standard</h1>
+      <p class="lesson-lead">切片軟體有好幾百個參數，但新手真正需要懂的只有十幾個。先看懂官方預設在做什麼，再一次只改一個。</p>
+      <div data-lesson-meta></div>
+    </header>
+
+    <div class="lesson-layout">
+      <article class="lesson-body">
+        <section id="goals">
+          <h2>學完你會</h2>
+          <ul class="goals">
+            <li>比較 0.12 Fine、0.20 Standard、0.28 Extra Draft 三種層高</li>
+            <li>讀懂 0.20mm Standard 裡最重要的參數</li>
+            <li>依照用途決定先改哪一個參數</li>
+            <li>分清楚「製程設定」和「耗材設定」各管什麼</li>
+          </ul>
+        </section>
+
+        <section id="layer-height" class="lesson-section">
+          <h2>層高：外觀和時間的取捨</h2>
+          <p>層高（layer height）是每一層的厚度。層越薄，斜面和曲面上的「階梯紋」越細，看起來越平滑；但同樣高度要印更多層，時間也更長。</p>
+          <figure>
+            <svg class="diagram" viewBox="0 0 520 170" role="img" aria-labelledby="layer-title">
+              <title id="layer-title">同一個斜面，用厚層印會有明顯階梯，用薄層印比較平滑</title>
+              <rect class="d-muted" x="20" y="140" width="220" height="6"/>
+              <rect class="d-brand" x="40" y="116" width="160" height="22" rx="3"/>
+              <rect class="d-brand" x="70" y="92" width="130" height="22" rx="3"/>
+              <rect class="d-brand" x="100" y="68" width="100" height="22" rx="3"/>
+              <rect class="d-brand" x="130" y="44" width="70" height="22" rx="3"/>
+              <path class="d-line-error" d="M40 140 L160 30"/>
+              <text x="40" y="24">厚層：階梯明顯、印得快</text>
+              <rect class="d-muted" x="280" y="140" width="220" height="6"/>
+              <rect class="d-brand" x="300" y="128" width="160" height="10" rx="2"/>
+              <rect class="d-brand" x="313" y="116" width="147" height="10" rx="2"/>
+              <rect class="d-brand" x="326" y="104" width="134" height="10" rx="2"/>
+              <rect class="d-brand" x="339" y="92" width="121" height="10" rx="2"/>
+              <rect class="d-brand" x="352" y="80" width="108" height="10" rx="2"/>
+              <rect class="d-brand" x="365" y="68" width="95" height="10" rx="2"/>
+              <rect class="d-brand" x="378" y="56" width="82" height="10" rx="2"/>
+              <rect class="d-brand" x="391" y="44" width="69" height="10" rx="2"/>
+              <path class="d-line-brand" d="M300 140 L420 30"/>
+              <text x="300" y="24">薄層：比較平滑、層數多</text>
+            </svg>
+            <figcaption>紅線和綠線是設計上的斜面。層越厚，實際印出來的輪廓離斜面越遠。</figcaption>
+          </figure>
+          <aside class="callout official">
+            <p class="callout-title">官方數值｜Bambu Lab A1 0.4 nozzle 機器預設檔與三個製程預設檔</p>
+            <ul>
+              <li>A1 搭配 0.4 mm 噴嘴時，可設定的層高範圍是 <strong>0.08–0.28 mm</strong>（<code>min_layer_height</code>／<code>max_layer_height</code>）。</li>
+              <li>官方提供的三個常用製程預設：<strong>0.12mm Fine</strong>、<strong>0.20mm Standard</strong>、<strong>0.28mm Extra Draft</strong>。</li>
+            </ul>
+          </aside>
+        </section>
+
+        <section id="profile" class="lesson-section">
+          <h2>0.20mm Standard 參數一次看懂</h2>
+          <p>這是 A1 最常用的預設。下表的值取自官方預設檔（解析繼承之後的結果），中間欄是設定裡的原始名稱，方便你在 Bambu Studio 或原始檔裡找。</p>
+          <div class="table-wrap"><table class="param-table">
+            <thead><tr><th>參數</th><th>官方預設</th><th>白話解釋</th></tr></thead>
+            <tbody>
+              <tr><td><code>layer_height</code></td><td>0.2 mm</td><td>每一層的厚度</td></tr>
+              <tr><td><code>initial_layer_print_height</code></td><td>0.2 mm</td><td>第一層的厚度</td></tr>
+              <tr><td><code>line_width</code></td><td>0.42 mm</td><td>一條擠出線的寬度，比噴嘴的 0.4 mm 稍寬</td></tr>
+              <tr><td><code>initial_layer_line_width</code></td><td>0.5 mm</td><td>第一層用比較寬的線，貼得更牢</td></tr>
+              <tr><td><code>wall_loops</code></td><td>2</td><td>外牆要繞幾圈</td></tr>
+              <tr><td><code>top_shell_layers</code>／<code>top_shell_thickness</code></td><td>5 層／1.0 mm</td><td>頂面要印幾層實心，以及最少多厚</td></tr>
+              <tr><td><code>bottom_shell_layers</code></td><td>3 層</td><td>底面要印幾層實心</td></tr>
+              <tr><td><code>sparse_infill_density</code></td><td>15%</td><td>內部填充的密度</td></tr>
+              <tr><td><code>sparse_infill_pattern</code></td><td>grid</td><td>內部填充的圖案（格子狀）</td></tr>
+              <tr><td><code>initial_layer_speed</code></td><td>50 mm/s</td><td>第一層印得慢，讓它黏穩</td></tr>
+              <tr><td><code>outer_wall_speed</code></td><td>200 mm/s</td><td>最外圈的速度，會影響外觀</td></tr>
+              <tr><td><code>support_type</code></td><td>tree(auto)</td><td>開啟支撐時，使用自動樹狀支撐</td></tr>
+            </tbody>
+          </table></div>
+          <aside class="callout tip">
+            <p class="callout-title">A竹提醒</p>
+            <p>預設檔是官方的出廠起點，不是保證最佳值。先用預設印一次，看到具體問題再去改對應的參數。</p>
+          </aside>
+        </section>
+
+        <section id="what-to-change" class="lesson-section">
+          <h2>依用途先改哪一個</h2>
+          <p>下面是<strong>經驗起點</strong>，不是固定答案。改完一定要試印比較。</p>
+          <div class="table-wrap"><table>
+            <thead><tr><th>用途</th><th>先改什麼</th><th>為什麼</th></tr></thead>
+            <tbody>
+              <tr><td>裝飾、展示品</td><td>層高往 0.12 Fine 調</td><td>曲面、斜面的階梯紋比較細</td></tr>
+              <tr><td>要受力的零件</td><td>牆層數加到 3–4 圈，再考慮填充</td><td>外牆承受大部分的彎曲和扭轉，加牆通常比單純提高填充更有效</td></tr>
+              <tr><td>只是驗證尺寸的草稿</td><td>改用 0.28 Extra Draft</td><td>層數少、印得快，用來確認尺寸和配合</td></tr>
+              <tr><td>頂面不平整</td><td>增加頂層數</td><td>頂面下面要有足夠的實心層撐住</td></tr>
+            </tbody>
+          </table></div>
+          <p><strong>一次只改一個參數</strong>，並且寫下改了什麼、結果如何。同時改三個參數，就算變好了，你也不知道是哪一個有效。</p>
+        </section>
+
+        <section id="filament" class="lesson-section">
+          <h2>製程設定 vs 耗材設定</h2>
+          <p>Bambu Studio 把設定分成三層：<strong>印表機</strong>（機器本身）、<strong>耗材</strong>（溫度、冷卻、流量）、<strong>製程</strong>（層高、牆、填充、速度）。前面講的都是製程；溫度則屬於耗材設定。</p>
+          <div class="table-wrap"><table class="param-table">
+            <thead><tr><th>項目</th><th>Bambu PLA Basic @BBL A1</th><th>Bambu PETG HF @BBL A1</th></tr></thead>
+            <tbody>
+              <tr><td>噴嘴溫度</td><td>220 °C（建議範圍 190–240）</td><td>240 °C，第一層 230 °C（建議範圍 230–270）</td></tr>
+              <tr><td>紋理 PEI 板溫度</td><td>65 °C</td><td>70 °C</td></tr>
+              <tr><td>最大體積流量</td><td>21 mm³/s</td><td>18 mm³/s</td></tr>
+              <tr><td>冷卻風扇最大轉速</td><td>80%</td><td>50%</td></tr>
+            </tbody>
+          </table></div>
+          <aside class="callout tip">
+            <p class="callout-title">A竹提醒</p>
+            <p>新手先選跟你手上耗材對應的官方預設，不要一開始就自己調溫度。其他品牌的耗材，以包裝或廠商建議的溫度範圍為準。</p>
+          </aside>
+        </section>
+
+        <section id="practice">
+          <h2>動手做</h2>
+          <h3>1. 估算層數</h3>
+          <div class="widget" data-widget="layer-calc"><p class="widget-title">層高比較</p></div>
+          <h3>2. 同一個模型切三次</h3>
+          <ol class="steps">
+            <li><strong>選機器和耗材</strong>：印表機選 Bambu Lab A1 0.4 nozzle，耗材選你手上那一卷對應的預設。</li>
+            <li><strong>切三次</strong>：同一個模型，分別用 0.12mm Fine、0.20mm Standard、0.28mm Extra Draft 切片。</li>
+            <li><strong>記錄</strong>：把三次的預估時間和耗材用量抄下來。</li>
+            <li><strong>預覽</strong>：在預覽畫面放大斜面，比較階梯紋的差別。</li>
+            <li><strong>決定</strong>：依照這個模型的用途，選出你要用的設定。</li>
+          </ol>
+        </section>
+
+        <section id="checklist">
+          <h2>列印前檢查清單</h2>
+          <ul class="checklist" data-widget="checklist" data-store="03-slicing-basics">
+            <li><label><input type="checkbox"> 印表機選的是 Bambu Lab A1 0.4 nozzle（跟實際噴嘴一致）</label></li>
+            <li><label><input type="checkbox"> 耗材選的是手上那一卷對應的預設</label></li>
+            <li><label><input type="checkbox"> 製程依用途選了 Fine、Standard 或 Extra Draft</label></li>
+            <li><label><input type="checkbox"> 這次只改了一個參數，並且有寫下來</label></li>
+            <li><label><input type="checkbox"> 切片後用預覽檢查過支撐和第一層</label></li>
+            <li><label><input type="checkbox"> 預估時間和耗材用量可以接受</label></li>
+          </ul>
+        </section>
+
+        <section id="troubleshoot">
+          <h2>常見問題</h2>
+          <div class="table-wrap"><table>
+            <thead><tr><th>症狀</th><th>可能原因</th><th>先試什麼</th></tr></thead>
+            <tbody>
+              <tr><td>斜面、曲面的階梯紋很明顯</td><td>層高太大</td><td>改用 0.12mm Fine，或調整擺放方向</td></tr>
+              <tr><td>頂面有小洞，或凹凸不平</td><td>頂面實心層不夠</td><td>增加頂層數</td></tr>
+              <tr><td>零件太容易斷</td><td>牆太少，或受力方向不對</td><td>先加牆層數；再看 <a href="../02-design-for-printing/#orientation">02 的列印方向</a></td></tr>
+              <tr><td>列印時間太長</td><td>層高太小，或填充太高</td><td>草稿先用 0.28mm Extra Draft</td></tr>
+              <tr><td>改了很多參數，結果更糟</td><td>同時改太多，不知道是哪一個造成的</td><td>回到官方預設，一次只改一個</td></tr>
+            </tbody>
+          </table></div>
+        </section>
+
+        <section id="quiz">
+          <h2>自我檢查</h2>
+          <div class="quiz" data-widget="quiz">
+            <p class="quiz-q">1. 零件太容易斷，你想讓它更堅固。根據這篇的經驗起點，通常先改哪一個？</p>
+            <div class="quiz-options">
+              <button type="button">填充直接拉到 100%</button>
+              <button type="button" data-correct>先增加牆層數</button>
+              <button type="button">把層高改成 0.28 mm</button>
+            </div>
+            <p class="quiz-explain" hidden>外牆承受大部分的彎曲和扭轉，加牆通常比單純提高填充更有效，而且比較省時間。改完記得試印比較。</p>
+          </div>
+          <div class="quiz" data-widget="quiz">
+            <p class="quiz-q">2. 模型高 30 mm，用 0.20mm Standard 印，大約有幾層？</p>
+            <div class="quiz-options">
+              <button type="button">30 層</button>
+              <button type="button" data-correct>150 層</button>
+              <button type="button">250 層</button>
+            </div>
+            <p class="quiz-explain" hidden>30 ÷ 0.2 = 150 層。改用 0.12 mm 就會變成 250 層，所以時間會明顯拉長。</p>
+          </div>
+        </section>
+
+        <section id="sources">
+          <h2>來源</h2>
+          <ul class="sources-list">
+            <li>P1 機器預設檔｜Bambu Lab A1 0.4 nozzle：<a href="https://github.com/bambulab/BambuStudio/blob/79df7ae309be398ed30c9f397c13c9911c2edc57/resources/profiles/BBL/machine/Bambu%20Lab%20A1%200.4%20nozzle.json" rel="noopener">GitHub bambulab/BambuStudio</a></li>
+            <li>P2 製程預設檔｜0.20mm Standard @BBL A1：<a href="https://github.com/bambulab/BambuStudio/blob/79df7ae309be398ed30c9f397c13c9911c2edc57/resources/profiles/BBL/process/0.20mm%20Standard%20%40BBL%20A1.json" rel="noopener">GitHub bambulab/BambuStudio</a></li>
+            <li>P3 製程預設檔｜0.12mm Fine @BBL A1：<a href="https://github.com/bambulab/BambuStudio/blob/79df7ae309be398ed30c9f397c13c9911c2edc57/resources/profiles/BBL/process/0.12mm%20Fine%20%40BBL%20A1.json" rel="noopener">GitHub bambulab/BambuStudio</a></li>
+            <li>P4 製程預設檔｜0.28mm Extra Draft @BBL A1：<a href="https://github.com/bambulab/BambuStudio/blob/79df7ae309be398ed30c9f397c13c9911c2edc57/resources/profiles/BBL/process/0.28mm%20Extra%20Draft%20%40BBL%20A1.json" rel="noopener">GitHub bambulab/BambuStudio</a></li>
+            <li>P5 耗材預設檔｜Bambu PLA Basic @BBL A1：<a href="https://github.com/bambulab/BambuStudio/blob/79df7ae309be398ed30c9f397c13c9911c2edc57/resources/profiles/BBL/filament/Bambu%20PLA%20Basic%20%40BBL%20A1.json" rel="noopener">GitHub bambulab/BambuStudio</a></li>
+            <li>P6 耗材預設檔｜Bambu PETG HF @BBL A1：<a href="https://github.com/bambulab/BambuStudio/blob/79df7ae309be398ed30c9f397c13c9911c2edc57/resources/profiles/BBL/filament/Bambu%20PETG%20HF%20%40BBL%20A1.json" rel="noopener">GitHub bambulab/BambuStudio</a></li>
+            <li>以上皆為 commit 79df7ae，擷取 2026-11-01。「先加牆再加填充」「外觀件用細層高」是經驗起點。</li>
+          </ul>
+        </section>
+
+        <nav class="lesson-pager" data-pager aria-label="上一篇與下一篇"></nav>
+      </article>
+      <aside class="toc" data-toc aria-label="本篇目錄"></aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span data-year>2026</span> A竹's 3D列印實驗室｜講義內容以 Bambu Lab A1 為例，官方數值以原始來源為準。</p>
+      <p><a href="https://www.instagram.com/azul_3dlab/" rel="noopener">Instagram @azul_3dlab</a>・<a href="https://github.com/Blind-Us/azul-3dprint-notes" rel="noopener">GitHub 原始碼</a></p>
+    </div>
+  </footer>
+  <script src="../../assets/js/lessons.js"></script>
+  <script src="../../assets/js/site.js"></script>
+</body>
+</html>

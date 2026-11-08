@@ -1,0 +1,114 @@
+<!doctype html>
+<!--
+  講義頁範本（CLAUDE.md 第 6、7 節）
+  使用方式：複製整個 _template 資料夾成 lessons/NN-slug/，然後只改有 ★ 標記的地方。
+  不要改：段落順序、section id、CSS/JS 引用、頁首頁尾結構。
+-->
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>★ 講義標題｜A竹 3D列印講義庫</title>
+  <meta name="description" content="★ 與 lessons.js summary 相同的一句話">
+  <meta name="theme-color" content="#315E43">
+  <link rel="icon" href="../../assets/img/favicon.png">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body data-lesson="NN-slug"><!-- ★ 改成 slug -->
+  <a class="skip-link" href="#main">跳到主要內容</a>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="../../"><img src="../../assets/img/logo.png" alt="" width="40" height="40"><span>A竹 3D列印講義庫<small>A竹's 3D列印實驗室</small></span></a>
+      <nav class="site-nav" aria-label="主要導覽">
+        <a href="../../#lessons">講義列表</a>
+        <a href="../../#how">使用方式</a>
+        <a href="https://blind-us.github.io/azul-3dlab/" rel="noopener">作品與客製</a>
+      </nav>
+    </div>
+    <div class="progress-bar" aria-hidden="true"></div>
+  </header>
+
+  <main id="main" class="container">
+    <header class="lesson-hero">
+      <p class="breadcrumb"><a href="../../">講義庫</a> ／ <span data-lesson-no></span></p>
+      <h1>★ 講義標題</h1>
+      <p class="lesson-lead">★ 一句話摘要</p>
+      <div data-lesson-meta></div>
+    </header>
+
+    <div class="lesson-layout">
+      <article class="lesson-body">
+        <section id="goals">
+          <h2>學完你會</h2>
+          <ul class="goals">
+            <li>★ 動詞開頭的目標</li>
+          </ul>
+        </section>
+
+        <section id="concept-a" class="lesson-section"><!-- ★ id 改成英文 -->
+          <h2>★ 觀念段落 1</h2>
+          <p>★ 內容</p>
+        </section>
+
+        <section id="concept-b" class="lesson-section">
+          <h2>★ 觀念段落 2</h2>
+          <p>★ 內容</p>
+        </section>
+
+        <section id="practice">
+          <h2>動手做</h2>
+          <p>★ 說明，並放入至少一個互動元件或步驟（CLAUDE.md 第 10 節）</p>
+        </section>
+
+        <section id="checklist">
+          <h2>列印前檢查清單</h2>
+          <ul class="checklist" data-widget="checklist" data-store="NN-slug">
+            <li><label><input type="checkbox"> ★ 具體動作</label></li>
+          </ul>
+        </section>
+
+        <section id="troubleshoot">
+          <h2>常見問題</h2>
+          <div class="table-wrap"><table>
+            <thead><tr><th>症狀</th><th>可能原因</th><th>先試什麼</th></tr></thead>
+            <tbody>
+              <tr><td>★</td><td>★</td><td>★</td></tr>
+            </tbody>
+          </table></div>
+        </section>
+
+        <section id="quiz">
+          <h2>自我檢查</h2>
+          <div class="quiz" data-widget="quiz">
+            <p class="quiz-q">★ 題目</p>
+            <div class="quiz-options">
+              <button type="button" data-correct>★ 正確答案</button>
+              <button type="button">★ 錯誤答案</button>
+            </div>
+            <p class="quiz-explain" hidden>★ 解說</p>
+          </div>
+        </section>
+
+        <section id="sources">
+          <h2>來源</h2>
+          <ul class="sources-list">
+            <li>★ 來源名稱：<a href="https://example.com" rel="noopener">網址</a>（擷取日期）</li>
+          </ul>
+        </section>
+
+        <nav class="lesson-pager" data-pager aria-label="上一篇與下一篇"></nav>
+      </article>
+      <aside class="toc" data-toc aria-label="本篇目錄"></aside>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span data-year>2026</span> A竹's 3D列印實驗室｜講義內容以 Bambu Lab A1 為例，官方數值以原始來源為準。</p>
+      <p><a href="https://www.instagram.com/azul_3dlab/" rel="noopener">Instagram @azul_3dlab</a>・<a href="https://github.com/Blind-Us/azul-3dprint-notes" rel="noopener">GitHub 原始碼</a></p>
+    </div>
+  </footer>
+  <script src="../../assets/js/lessons.js"></script>
+  <script src="../../assets/js/site.js"></script>
+</body>
+</html>

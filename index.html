@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A竹 3D列印講義庫</title>
+  <meta name="description" content="A竹's 3D列印實驗室的公開講義：從建模、切片、列印到後處理，以 Bambu Lab A1 為例，一篇解決一個問題。">
+  <meta name="theme-color" content="#315E43">
+  <link rel="icon" href="assets/img/favicon.png">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要內容</a>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="./" aria-current="page"><img src="assets/img/logo.png" alt="" width="40" height="40"><span>A竹 3D列印講義庫<small>A竹's 3D列印實驗室</small></span></a>
+      <nav class="site-nav" aria-label="主要導覽">
+        <a href="#lessons">講義列表</a>
+        <a href="#how">使用方式</a>
+        <a href="https://blind-us.github.io/azul-3dlab/" rel="noopener">作品與客製</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container">
+    <section class="home-hero">
+      <span class="eyebrow">A竹 的列印筆記，整理成講義</span>
+      <h1>把點子印出來之前，先搞懂這五步。</h1>
+      <p class="lead">一篇講義只解決一個實際會卡住的問題。以 Bambu Lab A1 為例，官方數值都附上出處，經驗值會標明要先試印。</p>
+      <ol class="flow" aria-label="FDM 列印工作流">
+        <li><strong>建模</strong><span>決定強度方向、懸空和配合尺寸</span></li>
+        <li><strong>切片</strong><span>把模型切成層，決定外觀和時間</span></li>
+        <li><strong>列印</strong><span>第一層決定整件的成敗</span></li>
+        <li><strong>取件與檢查</strong><span>等板子冷卻，量尺寸、試裝</span></li>
+        <li><strong>後處理</strong><span>去支撐、打磨，變成成品</span></li>
+      </ol>
+    </section>
+
+    <section id="lessons" aria-labelledby="lessons-title">
+      <div class="section-head">
+        <h2 id="lessons-title">講義列表</h2>
+        <p id="lesson-count"></p>
+      </div>
+      <div class="filter" id="stage-filter" role="group" aria-label="依階段篩選"></div>
+      <div class="lesson-grid" id="lesson-grid">
+        <noscript><p>講義列表需要 JavaScript。也可以直接從 GitHub 的 lessons 資料夾閱讀。</p></noscript>
+      </div>
+    </section>
+
+    <section id="how" aria-labelledby="how-title">
+      <div class="section-head">
+        <h2 id="how-title">怎麼使用這個講義庫</h2>
+      </div>
+      <div class="how">
+        <div>
+          <h3>照順序讀，或直接跳到卡住的地方</h3>
+          <p>講義依工作流排序。新手建議從 01 開始；已經在印的人，可以用上方的階段篩選直接找主題。</p>
+        </div>
+        <div>
+          <h3>每篇都有清單和小測驗</h3>
+          <p>「列印前檢查清單」的勾選會存在你的瀏覽器裡，下次打開還在。讀完用自我檢查確認觀念有沒有搞懂。</p>
+        </div>
+        <div>
+          <h3>數值分兩種，看清楚標示</h3>
+          <p>「官方數值」來自拓竹 Wiki 和 Bambu Studio 預設檔，有附出處。「經驗起點」是常用的出發點，一定要用自己的機器試印確認。</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span data-year>2026</span> A竹's 3D列印實驗室｜這個網站依照 <a href="https://github.com/Blind-Us/azul-3dprint-notes/blob/main/CLAUDE.md" rel="noopener">CLAUDE.md</a> 的規則，與 AI 一起持續擴充。</p>
+      <p><a href="https://www.instagram.com/azul_3dlab/" rel="noopener">Instagram @azul_3dlab</a>・<a href="https://blind-us.github.io/azul-3dlab/" rel="noopener">作品與客製網站</a>・<a href="https://github.com/Blind-Us/azul-3dprint-notes" rel="noopener">GitHub 原始碼</a></p>
+    </div>
+  </footer>
+  <script src="assets/js/lessons.js"></script>
+  <script src="assets/js/site.js"></script>
+</body>
+</html>
