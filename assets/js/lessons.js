@@ -70,7 +70,7 @@ window.AZUL_LESSONS = [
       "PEI 板",
       "排錯"
     ],
-    "status": "planned",
+    "status": "published",
     "updated": "2026-11-09"
   },
   {
