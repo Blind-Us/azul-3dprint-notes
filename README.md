@@ -7,17 +7,9 @@
 - AI 協作規則：[`CLAUDE.md`](CLAUDE.md)（其他 agent 請看 [`AGENTS.md`](AGENTS.md)）
 - 目前進度與待辦：[`NOTES.md`](NOTES.md)
 
-## 目前的講義
+## 講義
 
-| 編號 | 問題 | 主要視覺 | 狀態 |
-|---|---|---|---|
-| 01 | 3D 列印怎麼印出來？ | 噴頭列印動畫 | 已完成 |
-| 02 | 耗材怎麼分？ | 六角形雷達圖＋比較表 | 已完成 |
-| 03 | 從模型到成品要幾步？ | 步驟選擇器 | 準備中 |
-| 04 | 切片是什麼？ | — | 準備中 |
-| 05 | 第一次列印要注意什麼？ | — | 準備中 |
-
-最新狀態以 [`assets/js/lessons.js`](assets/js/lessons.js) 為準。
+講義列表和完成狀態只維護在 [`assets/js/lessons.js`](assets/js/lessons.js)，網站首頁會自動顯示；目前做到哪見 [`NOTES.md`](NOTES.md)。
 
 ## 這個專案的設計重點
 
