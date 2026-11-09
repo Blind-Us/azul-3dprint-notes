@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>模型裡有哪些部分？｜A竹 3D列印入門</title>
+  <meta name="description" content="外牆、填充、支撐、橋接，切開來一次看懂。">
+  <meta name="theme-color" content="#315E43">
+  <link rel="icon" href="../../assets/img/favicon.png">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body data-lesson="04-model-parts">
+  <a class="skip-link" href="#main">跳到主要內容</a>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="../../"><img src="../../assets/img/logo.png" alt="" width="40" height="40"><span>A竹 3D列印入門<small>A竹's 3D列印實驗室</small></span></a>
+      <nav class="site-nav" aria-label="主要導覽">
+        <a href="../../#lessons">所有講義</a>
+        <a href="https://github.com/Blind-Us/azul-3dprint-notes/blob/main/CLAUDE.md" rel="noopener">怎麼做的</a>
+        <a href="https://blind-us.github.io/azul-3dlab/" rel="noopener">作品與客製</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container lesson">
+    <header class="lesson-hero">
+      <p class="breadcrumb"><a href="../../">首頁</a> ／ <span data-lesson-no></span></p>
+      <h1>模型裡有哪些部分？</h1>
+    </header>
+
+    <section id="idea" class="split">
+      <div class="split-text">
+        <ol class="steps" id="idea-steps">
+          <li><strong>外牆</strong>最外面那幾圈，像蛋殼一樣包住整個模型。</li>
+          <li><strong>填充</strong>裡面不是實心，是一格一格的，省料又夠硬。</li>
+          <li><strong>支撐</strong>懸空的地方先蓋鷹架撐著，印完拆掉。</li>
+          <li><strong>橋接</strong>兩邊有柱子，中間直接拉線跨過去。</li>
+        </ol>
+      </div>
+      <div class="split-visual">
+        <div class="widget" data-widget="parts" data-steps="idea-steps">
+          <div class="parts-options" role="group" aria-label="選擇部分">
+            <button type="button" data-part="walls">外牆</button>
+            <button type="button" data-part="infill">填充</button>
+            <button type="button" data-part="support">支撐</button>
+            <button type="button" data-part="bridge">橋接</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="points">
+      <h2>一張表看差別</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>部分</th><th>像什麼</th><th>印完還在嗎</th></tr></thead>
+        <tbody>
+          <tr><td>外牆</td><td>蛋殼</td><td>✅ 就是你看到的外表</td></tr>
+          <tr><td>填充</td><td>蜂巢、鬆餅格子</td><td>✅ 藏在裡面</td></tr>
+          <tr><td>支撐</td><td>工地鷹架</td><td>✂️ 印完拆掉</td></tr>
+          <tr><td>橋接</td><td>吊橋</td><td>✅ 留著</td></tr>
+        </tbody>
+      </table></div>
+    </section>
+
+    <section id="quiz">
+      <h2>考考你</h2>
+      <div class="quiz" data-widget="quiz">
+        <p class="quiz-q">3D 列印的東西，裡面通常長怎樣？</p>
+        <div class="quiz-options">
+          <button type="button">全部都是實心的</button>
+          <button type="button" data-correct>一格一格的填充</button>
+          <button type="button">完全空心</button>
+        </div>
+        <p class="quiz-explain" hidden>裡面用格子撐著，省料又省時間。想要更堅固，就多加幾圈外牆、填得更密。</p>
+      </div>
+    </section>
+
+    <section id="sources">
+      <details class="sources">
+        <summary>資料來源</summary>
+        <ul>
+          <li>加大填充密度、牆數可以讓模型更堅固：<a href="https://wiki.bambulab.com/zh/software/bambu-studio/how-to-set-slicing-parameters" rel="noopener">拓竹 Wiki｜切片參數設定指南</a>（擷取 2026-11-10）</li>
+          <li>填充有網格、蜂窩等很多種圖案：<a href="https://wiki.bambulab.com/zh/software/bambu-studio/fill-patterns" rel="noopener">拓竹 Wiki｜填充圖案介紹</a>（擷取 2026-11-10）</li>
+          <li>懸空的地方要加支撐，印完要移除：<a href="https://wiki.bambulab.com/zh/software/bambu-studio/support" rel="noopener">拓竹 Wiki｜支撐耗材與支撐功能的介紹</a>（擷取 2026-11-10）</li>
+          <li>橋接是跨過空隙、下面沒有支撐的部分：<a href="https://wiki.bambulab.com/zh/software/bambu-studio/parameter/bridge" rel="noopener">拓竹 Wiki｜橋接設定</a>（擷取 2026-11-10）</li>
+          <li>蛋殼、鬆餅格子、鷹架、吊橋：生活比喻，方便想像。</li>
+        </ul>
+      </details>
+    </section>
+    <!-- TODO(作者): 補一張自己把模型切開、看得到外牆和填充的照片 -->
+
+    <nav class="lesson-pager" data-pager aria-label="上一頁與下一頁"></nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span data-year>2026</span> A竹's 3D列印實驗室｜這個網站由 AI 依照 <a href="https://github.com/Blind-Us/azul-3dprint-notes/blob/main/CLAUDE.md" rel="noopener">CLAUDE.md</a> 的規則製作。</p>
+      <p><a href="https://www.instagram.com/azul_3dlab/" rel="noopener">Instagram @azul_3dlab</a>・<a href="https://github.com/Blind-Us/azul-3dprint-notes" rel="noopener">GitHub 原始碼</a></p>
+    </div>
+  </footer>
+  <script src="../../assets/js/lessons.js"></script>
+  <script src="../../assets/js/site.js"></script>
+</body>
+</html>

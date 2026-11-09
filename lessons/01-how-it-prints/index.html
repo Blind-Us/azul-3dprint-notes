@@ -16,7 +16,7 @@
       <a class="brand" href="../../"><img src="../../assets/img/logo.png" alt="" width="40" height="40"><span>A竹 3D列印入門<small>A竹's 3D列印實驗室</small></span></a>
       <nav class="site-nav" aria-label="主要導覽">
         <a href="../../#lessons">所有講義</a>
-        <a href="../../#how">怎麼做的</a>
+        <a href="https://github.com/Blind-Us/azul-3dprint-notes/blob/main/CLAUDE.md" rel="noopener">怎麼做的</a>
         <a href="https://blind-us.github.io/azul-3dlab/" rel="noopener">作品與客製</a>
       </nav>
     </div>
@@ -26,12 +26,10 @@
     <header class="lesson-hero">
       <p class="breadcrumb"><a href="../../">首頁</a> ／ <span data-lesson-no></span></p>
       <h1>3D 列印怎麼印出來？</h1>
-      <p class="lesson-lead">就像用熱熔膠槍畫畫：把塑膠線融化，一條一條畫、一層一層疊。</p>
     </header>
 
     <section id="idea" class="split">
       <div class="split-text">
-        <h2>噴頭在做什麼？</h2>
         <ol class="steps" id="idea-steps">
           <li><strong>送線</strong>齒輪把一捲塑膠線往噴頭裡推。</li>
           <li><strong>融化</strong>噴頭加熱到約 220 °C，塑膠變軟。</li>
@@ -40,9 +38,7 @@
         </ol>
       </div>
       <div class="split-visual">
-        <div class="widget" data-widget="print-sim" data-steps="idea-steps">
-          <p class="widget-title">看噴頭印一個小花瓶</p>
-        </div>
+        <div class="widget" data-widget="print-sim" data-steps="idea-steps"></div>
       </div>
     </section>
 
@@ -65,7 +61,6 @@
           <p>10 cm 高的東西，一層 0.2 mm，就要畫 500 層。</p>
         </article>
       </div>
-      <aside class="callout warn"><p class="callout-title">注意安全</p><p>噴頭約 220 °C，列印時不要用手碰噴頭和剛印好的地方。</p></aside>
     </section>
 
     <section id="quiz">
@@ -85,9 +80,8 @@
       <details class="sources">
         <summary>資料來源</summary>
         <ul>
-          <li>逐層列印的流程：<a href="https://wiki.bambulab.com/en/a1/manual/intro-a1" rel="noopener">拓竹 Wiki｜A1 機器介紹</a>（擷取 2026-11-01）</li>
-          <li>噴頭溫度約 220 °C：<a href="https://github.com/bambulab/BambuStudio/blob/79df7ae309be398ed30c9f397c13c9911c2edc57/resources/profiles/BBL/filament/Bambu%20PLA%20Basic%20%40BBL%20A1.json" rel="noopener">Bambu Studio 預設檔｜Bambu PLA Basic @BBL A1</a></li>
-          <li>一層 0.2 mm：<a href="https://github.com/bambulab/BambuStudio/blob/79df7ae309be398ed30c9f397c13c9911c2edc57/resources/profiles/BBL/process/0.20mm%20Standard%20%40BBL%20A1.json" rel="noopener">Bambu Studio 預設檔｜0.20mm Standard @BBL A1</a></li>
+          <li>逐層列印的流程、PLA 約 210–220 °C：<a href="https://wiki.bambulab.com/zh/a1/manual/intro-a1" rel="noopener">拓竹 Wiki｜A1 主要組件介紹</a>（擷取 2026-11-10）</li>
+                    <li>預設一層 0.2 mm：<a href="https://wiki.bambulab.com/zh/software/bambu-studio/how-to-set-slicing-parameters" rel="noopener">拓竹 Wiki｜切片參數設定指南</a>（擷取 2026-11-10）</li>
           <li>熱熔膠槍、釣魚線、影印紙：生活比喻，方便想像。</li>
         </ul>
       </details>

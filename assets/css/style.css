@@ -79,7 +79,6 @@ p { margin: 0 0 1em; }
 .site-footer p { margin: 0 0 6px; }
 
 /* ---------- 共用小元素 ---------- */
-.eyebrow { display: inline-block; background: var(--lime); color: var(--ink); font-weight: 600; font-size: 0.85rem; padding: 4px 12px; border-radius: 999px; margin-bottom: 14px; }
 .tag { display: inline-block; font-size: 0.8rem; line-height: 1.4; padding: 3px 10px; border-radius: 999px; background: var(--lime-soft); color: var(--ink); }
 .tag.planned { background: var(--accent-soft); }
 .btn { font: inherit; font-size: 0.95rem; font-weight: 600; border: 1px solid var(--brand); background: var(--brand); color: var(--surface); padding: 8px 16px; border-radius: 999px; cursor: pointer; min-height: 44px; touch-action: manipulation; transition: background-color 150ms; }
@@ -91,12 +90,12 @@ a.btn:hover { color: var(--surface); }
 .chip-btn { font: inherit; font-size: 0.95rem; border: 1px solid var(--border); background: var(--surface); color: var(--ink); padding: 6px 16px; border-radius: 999px; cursor: pointer; min-height: 44px; touch-action: manipulation; transition: background-color 150ms, border-color 150ms; }
 .chip-btn:hover { border-color: var(--brand); }
 .chip-btn[aria-pressed="true"] { background: var(--brand); border-color: var(--brand); color: var(--surface); }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .note { font-size: 0.85rem; color: var(--muted); margin: 10px 0 0; line-height: 1.6; }
 
 /* ---------- 首頁 ---------- */
 .home-hero { padding: 56px 0 24px; }
 .home-hero h1 { font-size: clamp(2rem, 1.4rem + 3vw, 3.2rem); }
-.home-hero .lead { font-size: 1.15rem; color: var(--muted); max-width: 40ch; }
 
 .section-head { display: flex; align-items: end; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin: 40px 0 16px; }
 .section-head h2 { margin: 0; }
@@ -117,17 +116,12 @@ a.btn:hover { color: var(--surface); }
 .lesson-card.is-planned h3, .lesson-card.is-planned .icon { opacity: 0.6; }
 .read-mark { position: absolute; top: 18px; right: 18px; font-size: 0.78rem; color: var(--brand); background: var(--lime-soft); padding: 2px 10px; border-radius: 999px; }
 
-.how { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 16px; }
-.how > div { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
-.how h3 { margin-bottom: 6px; }
-.how p { color: var(--muted); margin: 0; font-size: 0.95rem; }
 
 /* ---------- 講義頁 ---------- */
 .lesson-hero { padding: 40px 0 8px; max-width: 46rem; }
 .breadcrumb { font-size: 0.9rem; color: var(--muted); margin-bottom: 10px; }
 .breadcrumb a { color: var(--muted); }
 .lesson-hero h1 { font-size: clamp(1.9rem, 1.4rem + 2.4vw, 2.8rem); margin: 0 0 12px; }
-.lesson-lead { font-size: 1.2rem; color: var(--muted); }
 
 .lesson > section { padding: 32px 0 8px; scroll-margin-top: 80px; }
 
@@ -141,6 +135,8 @@ a.btn:hover { color: var(--surface); }
 .steps li::before { content: counter(step); position: absolute; left: 12px; top: 10px; width: 32px; height: 32px; border-radius: 50%; background: var(--lime); color: var(--ink); display: grid; place-items: center; font-weight: 700; }
 .steps li strong { display: block; font-size: 1.05rem; }
 .steps li.is-active { background: var(--surface); border-color: var(--brand); }
+.steps li.is-clickable { cursor: pointer; }
+.steps li.is-clickable:hover { border-color: var(--border); }
 .steps li.is-active::before { background: var(--brand); color: var(--surface); }
 
 /* 重點卡片 */
@@ -198,10 +194,7 @@ tbody tr:last-child td { border-bottom: 0; }
 
 /* ---------- 互動元件 ---------- */
 .widget { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); }
-.widget-title { font-weight: 700; margin-bottom: 10px; }
 .widget-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 12px; }
-.widget-status { font-size: 0.95rem; color: var(--muted); margin: 10px 0 0; min-height: 1.8em; }
-.widget-status strong { color: var(--ink); }
 
 /* 列印動畫 print-sim（SVG 內只用 class，不寫死色碼） */
 .ps-svg { display: block; width: 100%; background: var(--bg); border-radius: var(--radius-sm); font-family: var(--font); }
@@ -232,10 +225,47 @@ tbody tr:last-child td { border-bottom: 0; }
 .rd-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; justify-content: center; font-size: 0.88rem; color: var(--muted); margin: 6px 0 0; }
 .rd-key { display: inline-block; width: 22px; height: 0; vertical-align: middle; margin-right: 6px; border-top: 3px solid var(--brand); }
 .rd-key.is-ref { border-top: 2px dashed var(--muted); }
-.rd-summary { background: var(--lime-soft); border-radius: var(--radius-sm); padding: 10px 14px; margin: 12px 0 0; }
 .rd-scores { list-style: none; padding: 0; margin: 12px 0 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 16px; font-size: 0.92rem; }
 .rd-scores li { display: flex; justify-content: space-between; gap: 8px; border-bottom: 1px dashed var(--border); padding: 2px 0; }
 .rd-meter { color: var(--brand); letter-spacing: 1px; }
+
+/* 流程圖 flow（03） */
+.fl-svg { display: block; width: 100%; background: var(--bg); border-radius: var(--radius-sm); }
+.fl-screen { fill: var(--surface); stroke: var(--ink); stroke-width: 3; }
+.fl-frame { fill: var(--muted); }
+.fl-plate { fill: var(--muted); transition: fill 500ms; }
+.fl-plate.is-hot { fill: var(--hot); }
+.fl-head { fill: var(--surface); stroke: var(--ink); stroke-width: 2; }
+.fl-nozzle { fill: var(--ink); }
+.fl-wire { fill: var(--lime-soft); stroke: var(--brand); stroke-width: 2; }
+.fl-layer { fill: var(--brand); }
+.fl-knife { stroke: var(--ink); stroke-width: 2; stroke-dasharray: 6 4; }
+.fl-arrow { fill: none; stroke: var(--brand); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+.fl-path { fill: none; stroke: var(--border); stroke-width: 3; stroke-dasharray: 6 6; }
+.fl-file { fill: var(--surface); stroke: var(--brand); stroke-width: 2; }
+.fl-file-line { stroke: var(--brand); stroke-width: 2; }
+.fl-clock { fill: var(--surface); stroke: var(--ink); stroke-width: 2.5; }
+.fl-hand { stroke: var(--ink); stroke-width: 2.5; stroke-linecap: round; }
+.fl-controls { justify-content: center; }
+.fl-dots { display: flex; gap: 2px; }
+.fl-dot { width: 32px; height: 44px; border: 0; background: transparent; cursor: pointer; position: relative; }
+.fl-dot::after { content: ""; position: absolute; left: 50%; top: 50%; width: 10px; height: 10px; margin: -5px 0 0 -5px; border-radius: 50%; background: var(--border); transition: background-color 150ms, transform 150ms; }
+.fl-dot[aria-current="step"]::after { background: var(--brand); transform: scale(1.3); }
+
+/* 模型剖面 parts（04） */
+.parts-options { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 12px; }
+.pt-svg { display: block; width: 100%; background: var(--bg); border-radius: var(--radius-sm); }
+.pt-bed { fill: var(--muted); }
+.pt-body { fill: var(--surface); }
+.pt-part { transition: opacity 250ms; }
+.pt-part.is-dim { opacity: 0.22; }
+.pt-infill line { stroke: var(--brand); stroke-width: 1.5; }
+.pt-walls { fill: none; stroke: var(--brand); stroke-width: 8; stroke-linejoin: round; }
+.pt-support line { stroke: var(--muted); stroke-width: 2.5; }
+.pt-bridge rect { fill: var(--ink); stroke: var(--ink); stroke-width: 2; }
+.pt-gap { fill: none; stroke: var(--ink); stroke-width: 1.5; stroke-dasharray: 4 4; }
+.pt-part.is-on.pt-infill line { stroke-width: 2.5; }
+.pt-part.is-on.pt-support line { stroke: var(--ink); }
 
 /* ---------- 響應式 ---------- */
 @media (max-width: 860px) {

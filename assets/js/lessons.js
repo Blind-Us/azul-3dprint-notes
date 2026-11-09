@@ -14,7 +14,7 @@ window.AZUL_LESSONS = [
     "summary": "看噴頭把塑膠線融化，一層一層疊成立體的東西。",
     "minutes": 3,
     "status": "published",
-    "updated": "2026-11-09"
+    "updated": "2026-11-10"
   },
   {
     "no": "02",
@@ -24,7 +24,7 @@ window.AZUL_LESSONS = [
     "summary": "PLA、PETG、TPU、ABS 差在哪？用六角形圖比比看。",
     "minutes": 4,
     "status": "published",
-    "updated": "2026-11-09"
+    "updated": "2026-11-10"
   },
   {
     "no": "03",
@@ -34,17 +34,17 @@ window.AZUL_LESSONS = [
     "summary": "找模型、切片、列印、取下，五步看懂整個流程。",
     "minutes": 3,
     "status": "published",
-    "updated": "2026-11-09"
+    "updated": "2026-11-10"
   },
   {
     "no": "04",
-    "slug": "04-what-is-slicing",
-    "icon": "🔪",
-    "title": "切片是什麼？",
-    "summary": "電腦怎麼把模型切成一層一層，告訴印表機怎麼走。",
+    "slug": "04-model-parts",
+    "icon": "🧱",
+    "title": "模型裡有哪些部分？",
+    "summary": "外牆、填充、支撐、橋接，切開來一次看懂。",
     "minutes": 3,
-    "status": "planned",
-    "updated": "2026-11-09"
+    "status": "published",
+    "updated": "2026-11-10"
   },
   {
     "no": "05",
@@ -54,6 +54,6 @@ window.AZUL_LESSONS = [
     "summary": "開印前檢查三件事，避免第一次就失敗。",
     "minutes": 3,
     "status": "planned",
-    "updated": "2026-11-09"
+    "updated": "2026-11-10"
   }
 ];

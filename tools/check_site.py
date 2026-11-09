@@ -17,7 +17,7 @@ except Exception:  # 舊版 Python 沒有 reconfigure
 
 ROOT = Path(__file__).resolve().parent.parent
 MAX_CHARS = 400        # 每頁正文（不含資料來源）最多幾個中文字（CLAUDE.md 第 8.1 節）
-MAX_LEAD = 40          # 一句話答案最多幾個字
+
 MAX_SUMMARY = 30       # lessons.js summary 最多幾個字
 errors, warnings = [], []
 checks = 0
@@ -111,13 +111,15 @@ for i, l in enumerate(LESSONS):
 
     # 4. 五個固定區塊與順序
     ok('<header class="lesson-hero">' in html, f"{tag} 缺少 header.lesson-hero")
-    lead = re.search(r'<p class="lesson-lead">(.*?)</p>', html, re.S)
-    ok(lead and length(lead.group(1)) <= MAX_LEAD, f"{tag} 一句話答案 .lesson-lead 要在 {MAX_LEAD} 字內（目前 {lead and length(lead.group(1))} 字）")
+    # 像簡報一樣：畫面自己說話，不加副標、元件標題或說明小字（CLAUDE.md 8.1）
+    for cls, name in [("lesson-lead", "副標 .lesson-lead"), ("widget-title", "元件標題 .widget-title"), ("note", "說明小字 .note")]:
+        ok(f'class="{cls}"' not in html, f"{tag} 不要加{name}，讓畫面自己說明")
     ids = re.findall(r'<section id="([^"]+)"', html)
     ok(ids == SECTIONS, f"{tag} 區塊應剛好是 {' → '.join(SECTIONS)}（目前 {' → '.join(ids)}）")
 
     idea = block(html, r'<section id="idea" class="split">')
     ok(idea != "", f"{tag} #idea 要加 class=\"split\"（左文右圖）")
+    ok("<h2" not in idea, f"{tag} #idea 不要加小標題，<h1> 問句就是這一頁的標題")
     steps = re.search(r'<ol class="steps"[^>]*>(.*?)</ol>', idea, re.S)
     n_steps = steps.group(1).count("<li>") if steps else 0
     ok(3 <= n_steps <= 5, f"{tag} #idea 左邊的 ol.steps 要有 3–5 步（目前 {n_steps}）")

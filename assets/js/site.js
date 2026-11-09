@@ -35,6 +35,24 @@
   };
   function published() { return LESSONS.filter(function (l) { return l.status === "published"; }); }
   function lerp(a, b, p) { return a + (b - a) * p; }
+  function stepsOf(root) {
+    var list = document.getElementById(root.getAttribute("data-steps") || "");
+    return list ? $$("li", list) : [];
+  }
+  // 簡單補間動畫：同一個元件一次只跑一段；減少動態時直接跳到結果
+  function makeTween() {
+    var raf = 0;
+    return { run: function (dur, fn) {
+      window.cancelAnimationFrame(raf);
+      if (REDUCE || !dur) { fn(1); return; }
+      var start = performance.now();
+      (function step(now) {
+        var p = Math.max(0, Math.min(1, (now - start) / dur));
+        fn(p);
+        if (p < 1) raf = window.requestAnimationFrame(step);
+      })(start);
+    } };
+  }
 
   /* ---------- 首頁 ---------- */
   function renderHome() {
@@ -55,7 +73,6 @@
       if (planned) h3.textContent = lesson.title;
       else h3.appendChild(el("a", { href: "lessons/" + lesson.slug + "/" }, lesson.title));
       card.appendChild(h3);
-      card.appendChild(el("p", null, lesson.summary));
       var meta = el("div", { className: "meta" });
       meta.appendChild(el("span", { className: "tag" + (planned ? " planned" : "") }, planned ? "準備中" : "約 " + lesson.minutes + " 分鐘"));
       card.appendChild(meta);
@@ -178,7 +195,7 @@
       svgEl("text", { x: -14, y: -2, "text-anchor": "end", class: "ps-label" }, head).textContent = "噴嘴";
       root.appendChild(svg);
 
-      var status = el("p", { className: "widget-status", "aria-live": "polite" });
+      var status = el("p", { className: "sr-only", "aria-live": "polite" });
       var controls = el("div", { className: "widget-controls" });
       var playBtn = el("button", { type: "button", className: "btn" }, "▶ 播放");
       var nextBtn = el("button", { type: "button", className: "btn ghost" }, "下一步 ›");
@@ -186,7 +203,6 @@
       controls.appendChild(playBtn); controls.appendChild(nextBtn); controls.appendChild(resetBtn);
       root.appendChild(status);
       root.appendChild(controls);
-      root.appendChild(el("p", { className: "note" }, "動畫是放大示意。實際一層只有約 0.2 mm，比兩張影印紙還薄。"));
 
       // 時間軸：送線 → 加熱 → (畫線 → 上移) × N → 完成
       var timeline = [{ type: "feed", dur: 1400 }, { type: "heat", dur: 1400 }];
@@ -284,14 +300,244 @@
       resetBtn.addEventListener("click", function () { stopAuto(); pause(); k = 0; t = 0; render(); });
 
       render();
-      if (REDUCE) {
-        setStatus("", "按「下一步」，一步一步看噴頭在做什麼。");
-      } else if ("IntersectionObserver" in window) {
+      if (!REDUCE && "IntersectionObserver" in window) {
         // 捲到動畫時自動播放一次；使用者自己按過按鈕就不再自動播放
         auto = new IntersectionObserver(function (entries) {
           if (entries.some(function (e) { return e.isIntersecting; })) { stopAuto(); play(); }
         }, { threshold: 0.4 });
         auto.observe(svg);
+      }
+    },
+
+    /* 流程圖 flow：五個畫面輪播（找模型 → 切片 → 送去印 → 等它印 → 取下來）。
+       data-steps 填左邊步驟清單 <ol> 的 id；點左邊步驟也能切換畫面。 */
+    flow: function (root) {
+      var stepItems = stepsOf(root);
+      var svg = svgEl("svg", { viewBox: "0 0 320 240", class: "fl-svg", role: "img" });
+      var title = svgEl("title", null, svg);
+      var VASE = [36, 32, 28, 26, 24, 24, 25, 27, 30, 33];
+      var tw = makeTween();
+      function tween(d, fn) { tw.run(d, fn); }
+      function vase(parent, cx, baseY, lh, cls) {
+        return VASE.map(function (h, i) {
+          return svgEl("rect", { x: cx - h, y: baseY - lh * (i + 1), width: h * 2, height: lh - 2, rx: (lh - 2) / 2, class: cls }, parent);
+        });
+      }
+      function printer(parent, x) {
+        var g = svgEl("g", { transform: "translate(" + x + ",0)" }, parent);
+        svgEl("rect", { x: 0, y: 206, width: 150, height: 12, rx: 3, class: "fl-frame" }, g);
+        svgEl("rect", { x: 136, y: 40, width: 10, height: 168, rx: 3, class: "fl-frame" }, g);
+        svgEl("rect", { x: 6, y: 40, width: 140, height: 10, rx: 3, class: "fl-frame" }, g);
+        var plate = svgEl("rect", { x: 10, y: 198, width: 112, height: 8, rx: 2, class: "fl-plate" }, g);
+        var head = svgEl("g", { transform: "translate(66,60)" }, g);
+        svgEl("rect", { x: -11, y: 0, width: 22, height: 22, rx: 3, class: "fl-head" }, head);
+        svgEl("polygon", { points: "-6,22 6,22 2,30 -2,30", class: "fl-nozzle" }, head);
+        return { g: g, plate: plate, head: head };
+      }
+      var scenes = [];
+      function scene(name, build) {
+        var g = svgEl("g", { class: "fl-scene" }, svg);
+        var s = build(g) || {};
+        s.g = g; s.name = name;
+        scenes.push(s);
+      }
+
+      // ① 找模型：螢幕上出現一個模型
+      scene("找模型：在電腦上找到一個花瓶模型", function (g) {
+        svgEl("rect", { x: 50, y: 24, width: 220, height: 146, rx: 10, class: "fl-screen" }, g);
+        svgEl("rect", { x: 150, y: 170, width: 20, height: 22, class: "fl-frame" }, g);
+        svgEl("rect", { x: 112, y: 192, width: 96, height: 10, rx: 4, class: "fl-frame" }, g);
+        var model = svgEl("g", null, g);
+        vase(model, 160, 150, 11, "fl-wire");
+        var arrow = svgEl("g", null, g);
+        svgEl("line", { x1: 236, y1: 40, x2: 236, y2: 78, class: "fl-arrow" }, arrow);
+        svgEl("polyline", { points: "226,68 236,80 246,68", class: "fl-arrow" }, arrow);
+        return { enter: function () {
+          tween(900, function (p) {
+            model.setAttribute("transform", "translate(160,150) scale(" + (0.85 + 0.15 * p).toFixed(3) + ") translate(-160,-150)");
+            arrow.setAttribute("transform", "translate(0," + (-12 + 12 * p).toFixed(1) + ")");
+          });
+        } };
+      });
+
+      // ② 切片：模型被切成一層一層
+      scene("切片：模型被切成一層一層", function (g) {
+        var layers = vase(g, 160, 214, 14, "fl-layer");
+        var knife = svgEl("line", { x1: 100, x2: 220, y1: 0, y2: 0, class: "fl-knife" }, g);
+        return { enter: function () {
+          tween(1600, function (p) {
+            var a = Math.min(1, p / 0.55), b = Math.max(0, (p - 0.55) / 0.45);
+            knife.setAttribute("transform", "translate(0," + lerp(66, 214, a).toFixed(1) + ")");
+            knife.setAttribute("opacity", p < 0.6 ? "1" : "0");
+            layers.forEach(function (r, i) {
+              r.setAttribute("transform", "translate(0," + (-i * 5 * b).toFixed(1) + ")");
+            });
+          });
+        } };
+      });
+
+      // ③ 送去印：檔案從電腦飛到印表機
+      scene("送去印：檔案從電腦傳到印表機", function (g) {
+        svgEl("rect", { x: 10, y: 100, width: 104, height: 68, rx: 6, class: "fl-screen" }, g);
+        svgEl("polygon", { points: "2,176 122,176 114,168 10,168", class: "fl-frame" }, g);
+        vase(svgEl("g", { transform: "translate(62,156) scale(0.4) translate(-160,-150)" }, g), 160, 150, 11, "fl-wire");
+        printer(g, 165);
+        svgEl("path", { d: "M100,96 C140,40 190,40 222,80", class: "fl-path" }, g);
+        var file = svgEl("g", null, g);
+        svgEl("polygon", { points: "-9,-12 4,-12 9,-7 9,12 -9,12", class: "fl-file" }, file);
+        svgEl("line", { x1: -5, y1: -3, x2: 5, y2: -3, class: "fl-file-line" }, file);
+        svgEl("line", { x1: -5, y1: 3, x2: 5, y2: 3, class: "fl-file-line" }, file);
+        function bez(t) {
+          var u = 1 - t;
+          return [u * u * u * 100 + 3 * u * u * t * 140 + 3 * u * t * t * 190 + t * t * t * 222,
+                  u * u * u * 96 + 3 * u * u * t * 40 + 3 * u * t * t * 40 + t * t * t * 80];
+        }
+        return { enter: function () {
+          tween(1400, function (p) {
+            var q = bez(1 - Math.pow(1 - p, 2));
+            file.setAttribute("transform", "translate(" + q[0].toFixed(1) + "," + q[1].toFixed(1) + ")");
+          });
+        } };
+      });
+
+      // ④ 等它印：一層一層長出來
+      scene("等它印：噴頭一層一層疊出花瓶", function (g) {
+        var pr = printer(g, 90);
+        var layers = vase(pr.g, 66, 198, 12, "fl-layer");
+        var clock = svgEl("g", { transform: "translate(42,64)" }, g);
+        svgEl("circle", { r: 20, class: "fl-clock" }, clock);
+        var hand = svgEl("line", { x1: 0, y1: 0, x2: 0, y2: -13, class: "fl-hand" }, clock);
+        svgEl("line", { x1: 0, y1: 0, x2: 8, y2: 0, class: "fl-hand" }, clock);
+        return { enter: function () {
+          tween(2800, function (p) {
+            var n = VASE.length, f = p * n, k = Math.min(n - 1, Math.floor(f));
+            layers.forEach(function (r, i) { r.setAttribute("opacity", i < f ? "1" : "0"); });
+            var w = VASE[k], part = p >= 1 ? 1 : f - k;
+            var x = 66 + (k % 2 ? 1 : -1) * lerp(w, -w, part);
+            pr.head.setAttribute("transform", "translate(" + x.toFixed(1) + "," + (198 - 12 * (k + 1) - 32).toFixed(1) + ")");
+            hand.setAttribute("transform", "rotate(" + (p * 720).toFixed(0) + ")");
+          });
+        } };
+      });
+
+      // ⑤ 取下來：列印板變涼，再把成品拿起來
+      scene("取下來：等列印板涼了，把花瓶拿起來", function (g) {
+        var plate = svgEl("rect", { x: 70, y: 210, width: 180, height: 10, rx: 3, class: "fl-plate" }, g);
+        var obj = svgEl("g", null, g);
+        vase(obj, 160, 210, 15, "fl-layer");
+        var arrow = svgEl("g", { opacity: "0" }, g);
+        svgEl("line", { x1: 240, y1: 150, x2: 240, y2: 90, class: "fl-arrow" }, arrow);
+        svgEl("polyline", { points: "230,100 240,88 250,100", class: "fl-arrow" }, arrow);
+        return { enter: function () {
+          tween(2200, function (p) {
+            plate.classList.toggle("is-hot", p < 0.45);
+            var b = Math.max(0, (p - 0.5) / 0.5), e = 1 - Math.pow(1 - b, 3);
+            obj.setAttribute("transform", "translate(0," + (-40 * e).toFixed(1) + ")");
+            arrow.setAttribute("opacity", b > 0 ? "1" : "0");
+          });
+        } };
+      });
+
+      root.appendChild(svg);
+      var controls = el("div", { className: "widget-controls fl-controls" });
+      var prevBtn = el("button", { type: "button", className: "btn ghost", "aria-label": "上一步" }, "‹");
+      var nextBtn = el("button", { type: "button", className: "btn ghost", "aria-label": "下一步" }, "›");
+      var dots = el("div", { className: "fl-dots" });
+      var dotBtns = scenes.map(function (s, i) {
+        var d = el("button", { type: "button", className: "fl-dot", "aria-label": "第 " + (i + 1) + " 步" });
+        d.addEventListener("click", function () { stopAuto(); show(i); });
+        dots.appendChild(d);
+        return d;
+      });
+      controls.appendChild(prevBtn); controls.appendChild(dots); controls.appendChild(nextBtn);
+      root.appendChild(controls);
+
+      var cur = 0, timer = 0, auto = false;
+      function show(i) {
+        cur = (i + scenes.length) % scenes.length;
+        scenes.forEach(function (s, k) { s.g.setAttribute("visibility", k === cur ? "visible" : "hidden"); });
+        dotBtns.forEach(function (d, k) { d.setAttribute("aria-current", k === cur ? "step" : "false"); });
+        stepItems.forEach(function (li, k) { li.classList.toggle("is-active", k === cur); });
+        title.textContent = scenes[cur].name;
+        if (scenes[cur].enter) scenes[cur].enter();
+        window.clearTimeout(timer);
+        if (auto && !REDUCE) timer = window.setTimeout(function () { show(cur + 1); }, 3800);
+      }
+      function stopAuto() { auto = false; window.clearTimeout(timer); }
+      prevBtn.addEventListener("click", function () { stopAuto(); show(cur - 1); });
+      nextBtn.addEventListener("click", function () { stopAuto(); show(cur + 1); });
+      stepItems.forEach(function (li, k) {
+        li.classList.add("is-clickable");
+        li.addEventListener("click", function () { stopAuto(); show(k); });
+      });
+      show(0);
+      if (!REDUCE && "IntersectionObserver" in window) {
+        var io = new IntersectionObserver(function (entries) {
+          if (entries.some(function (e) { return e.isIntersecting; })) { io.disconnect(); auto = true; show(cur); }
+        }, { threshold: 0.4 });
+        io.observe(svg);
+      }
+    },
+
+    /* 模型剖面 parts：外牆、填充、支撐、橋接，點按鈕（或左邊步驟）亮起那一部分。
+       按鈕寫 data-part（walls / infill / support / bridge），順序要和左邊步驟一樣；data-steps 同上。 */
+    parts: function (root) {
+      var stepItems = stepsOf(root);
+      var buttons = $$("[data-part]", root);
+      if (!buttons.length) return;
+      var svg = svgEl("svg", { viewBox: "0 0 320 250", class: "pt-svg", role: "img" });
+      var title = svgEl("title", null, svg);
+      var OUT = "M40,226 V60 H292 V100 H232 V226 H176 V100 H104 V226 Z";
+      var defs = svgEl("defs", null, svg);
+      var clip = svgEl("clipPath", { id: "pt-clip" }, defs);
+      svgEl("path", { d: OUT }, clip);
+      svgEl("rect", { x: 16, y: 228, width: 288, height: 8, rx: 3, class: "pt-bed" }, svg);
+      svgEl("path", { d: OUT, class: "pt-body" }, svg);
+      var groups = {};
+      groups.infill = svgEl("g", { "clip-path": "url(#pt-clip)", class: "pt-part pt-infill" }, svg);
+      for (var d = -200; d < 320; d += 16) {
+        svgEl("line", { x1: d, y1: 226, x2: d + 170, y2: 56 }, groups.infill);
+        svgEl("line", { x1: d, y1: 56, x2: d + 170, y2: 226 }, groups.infill);
+      }
+      groups.support = svgEl("g", { class: "pt-part pt-support" }, svg);
+      for (var x = 240; x <= 286; x += 9) svgEl("line", { x1: x, y1: 108, x2: x, y2: 226 }, groups.support);
+      svgEl("line", { x1: 237, y1: 108, x2: 288, y2: 108 }, groups.support);
+      groups.walls = svgEl("path", { d: OUT, class: "pt-part pt-walls" }, svg);
+      groups.bridge = svgEl("g", { class: "pt-part pt-bridge" }, svg);
+      svgEl("rect", { x: 106, y: 90, width: 68, height: 8, rx: 2 }, groups.bridge);
+      svgEl("path", { d: "M106,112 Q140,124 174,112", class: "pt-gap" }, groups.bridge);
+      root.insertBefore(svg, root.firstChild);
+
+      var names = buttons.map(function (b) { return b.getAttribute("data-part"); });
+      var cur = 0, timer = 0, auto = false;
+      function show(i) {
+        cur = (i + names.length) % names.length;
+        var id = names[cur];
+        Object.keys(groups).forEach(function (k) {
+          groups[k].classList.toggle("is-on", k === id);
+          groups[k].classList.toggle("is-dim", k !== id);
+        });
+        buttons.forEach(function (b, k) { b.setAttribute("aria-pressed", String(k === cur)); });
+        stepItems.forEach(function (li, k) { li.classList.toggle("is-active", k === cur); });
+        title.textContent = "模型剖面圖，亮起的是：" + buttons[cur].textContent;
+        window.clearTimeout(timer);
+        if (auto && !REDUCE) timer = window.setTimeout(function () { show(cur + 1); }, 2600);
+      }
+      function stopAuto() { auto = false; window.clearTimeout(timer); }
+      buttons.forEach(function (b, k) {
+        b.classList.add("chip-btn");
+        b.addEventListener("click", function () { stopAuto(); show(k); });
+      });
+      stepItems.forEach(function (li, k) {
+        li.classList.add("is-clickable");
+        li.addEventListener("click", function () { stopAuto(); show(k); });
+      });
+      show(0);
+      if (!REDUCE && "IntersectionObserver" in window) {
+        var io = new IntersectionObserver(function (entries) {
+          if (entries.some(function (e) { return e.isIntersecting; })) { io.disconnect(); auto = true; show(cur); }
+        }, { threshold: 0.4 });
+        io.observe(svg);
       }
     },
 
@@ -344,7 +590,7 @@
       });
 
       var legend = el("p", { className: "rd-legend" });
-      var summary = el("p", { className: "rd-summary", "aria-live": "polite" });
+      var summary = el("p", { className: "sr-only", "aria-live": "polite" });
       var scores = el("ul", { className: "rd-scores", "aria-label": "各項分數" });
       var options = $(".radar-options", root) || buttons[0].parentNode;
       options.insertAdjacentElement("afterend", svg);
