@@ -5,6 +5,7 @@
 - 網站：https://blind-us.github.io/azul-3dprint-notes/
 - 姊妹站（作品與客製）：https://blind-us.github.io/azul-3dlab/
 - AI 協作規則：[`CLAUDE.md`](CLAUDE.md)（其他 agent 請看 [`AGENTS.md`](AGENTS.md)）
+- 目前進度與待辦：[`NOTES.md`](NOTES.md)
 
 ## 目前的講義
 
@@ -37,6 +38,7 @@ lessons/_template/        → 複製成 lessons/NN-slug/，填入內容
 assets/js/lessons.js      → 新增或更新條目，status 改成 "published"
 python tools/check_site.py → 全部通過
 log.md                    → 在最上方寫紀錄
+NOTES.md                  → 更新狀態、下一步和待辦
 ```
 
 完整規則見 [`CLAUDE.md`](CLAUDE.md) 第 6 節。

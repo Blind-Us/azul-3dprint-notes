@@ -150,7 +150,7 @@ for f in ROOT.rglob("*.html"):
         ok(target.exists(), f"[{rel}] 連結不存在：{url}")
 
 # 8. 必要的根目錄檔案
-for f in ["CLAUDE.md", "AGENTS.md", "README.md", "index.html", ".nojekyll", "log.md",
+for f in ["CLAUDE.md", "AGENTS.md", "README.md", "index.html", ".nojekyll", "log.md", "NOTES.md",
           "lessons/_template/index.html", "notes/_template.md", "sources/official-sources.md"]:
     ok((ROOT / f).exists(), f"缺少必要檔案 {f}")
 ok('id="lesson-grid"' in read("index.html"), "首頁缺少 #lesson-grid")
