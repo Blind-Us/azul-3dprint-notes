@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>耗材怎麼分？｜A竹 3D列印入門</title>
+  <meta name="description" content="PLA、PETG、TPU、ABS 差在哪？用六角形圖比比看。">
+  <meta name="theme-color" content="#315E43">
+  <link rel="icon" href="../../assets/img/favicon.png">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body data-lesson="02-filament-types">
+  <a class="skip-link" href="#main">跳到主要內容</a>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="../../"><img src="../../assets/img/logo.png" alt="" width="40" height="40"><span>A竹 3D列印入門<small>A竹's 3D列印實驗室</small></span></a>
+      <nav class="site-nav" aria-label="主要導覽">
+        <a href="../../#lessons">所有講義</a>
+        <a href="../../#how">怎麼做的</a>
+        <a href="https://blind-us.github.io/azul-3dlab/" rel="noopener">作品與客製</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container lesson">
+    <header class="lesson-hero">
+      <p class="breadcrumb"><a href="../../">首頁</a> ／ <span data-lesson-no></span></p>
+      <h1>耗材怎麼分？</h1>
+      <p class="lesson-lead">最常見的有 PLA、PETG、TPU、ABS 四種。新手先從 PLA 開始就對了。</p>
+    </header>
+
+    <section id="idea" class="split">
+      <div class="split-text">
+        <h2>用六角形比比看</h2>
+        <ol class="steps" id="idea-steps">
+          <li><strong>點材料</strong>按鈕可以切換四種耗材。</li>
+          <li><strong>看形狀</strong>越往外，代表那一項越強。</li>
+          <li><strong>對照 PLA</strong>虛線是 PLA，方便你比較。</li>
+        </ol>
+      </div>
+      <div class="split-visual">
+        <div class="widget" data-widget="radar" data-axes="好印程度,硬挺,耐摔,耐熱,彈性,便宜" data-max="5" data-ref="PLA">
+          <p class="widget-title">耗材能力六角形</p>
+          <div class="radar-options" role="group" aria-label="選擇耗材">
+            <button type="button" data-series="PLA" data-values="5,4,2,1,1,5" data-note="最好印、最便宜，但怕熱，夏天放車上會變形。新手首選。">PLA</button>
+            <button type="button" data-series="PETG" data-values="4,3,4,3,2,4" data-note="比 PLA 耐摔、也比較耐熱，適合真的要拿來用的東西。">PETG</button>
+            <button type="button" data-series="TPU" data-values="2,1,5,2,5,3" data-note="軟軟的、有彈性，可以印手機殼、止滑墊，但比較難印。">TPU</button>
+            <button type="button" data-series="ABS" data-values="2,3,4,4,1,4" data-note="耐熱又耐摔，但容易翹、有氣味，A1 不建議印大件。">ABS</button>
+          </div>
+          <p class="note">分數是常見的相對比較（1–5 分），不是實驗數據；不同品牌會不一樣。</p>
+          <!-- TODO(作者): 依自己印過的經驗調整分數 -->
+        </div>
+      </div>
+    </section>
+
+    <section id="points">
+      <h2>一張表看差別</h2>
+      <div class="table-wrap"><table>
+        <thead><tr><th>材料</th><th>摸起來像</th><th>適合做什麼</th><th>A1 能印嗎</th></tr></thead>
+        <tbody>
+          <tr><td>PLA</td><td>硬硬的塑膠玩具</td><td>公仔、擺飾、模型</td><td>✅ 可以，新手首選</td></tr>
+          <tr><td>PETG</td><td>寶特瓶那種硬塑膠</td><td>收納盒、掛勾、零件</td><td>✅ 可以</td></tr>
+          <tr><td>TPU</td><td>軟軟的橡膠</td><td>手機殼、止滑墊</td><td>✅ 可以</td></tr>
+          <tr><td>ABS</td><td>樂高積木</td><td>要耐熱的零件</td><td>⚠️ 不建議印大件</td></tr>
+        </tbody>
+      </table></div>
+      <aside class="callout warn"><p class="callout-title">注意安全</p><p>ABS 加熱時會有刺激性氣味，一定要在通風的地方印。</p></aside>
+    </section>
+
+    <section id="quiz">
+      <h2>考考你</h2>
+      <div class="quiz" data-widget="quiz">
+        <p class="quiz-q">想印一個軟軟的手機殼，要選哪一種耗材？</p>
+        <div class="quiz-options">
+          <button type="button">PLA</button>
+          <button type="button" data-correct>TPU</button>
+          <button type="button">ABS</button>
+        </div>
+        <p class="quiz-explain" hidden>TPU 有彈性，彎了會彈回來。PLA 和 ABS 都是硬的。</p>
+      </div>
+    </section>
+
+    <section id="sources">
+      <details class="sources">
+        <summary>資料來源</summary>
+        <ul>
+          <li>A1 適合 PLA、PETG、TPU；ABS 不建議印大件、加熱有刺激性氣體：<a href="https://wiki.bambulab.com/en/a1/manual/faq" rel="noopener">拓竹 Wiki｜A1 常見問題</a>（擷取 2026-11-01）</li>
+          <li>六角形分數、「摸起來像」和用途：一般常見的相對比較（經驗起點），不是實驗數據。</li>
+        </ul>
+      </details>
+    </section>
+    <!-- TODO(作者): 補一張四種耗材印出來的實物照 -->
+
+    <nav class="lesson-pager" data-pager aria-label="上一頁與下一頁"></nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span data-year>2026</span> A竹's 3D列印實驗室｜這個網站由 AI 依照 <a href="https://github.com/Blind-Us/azul-3dprint-notes/blob/main/CLAUDE.md" rel="noopener">CLAUDE.md</a> 的規則製作。</p>
+      <p><a href="https://www.instagram.com/azul_3dlab/" rel="noopener">Instagram @azul_3dlab</a>・<a href="https://github.com/Blind-Us/azul-3dprint-notes" rel="noopener">GitHub 原始碼</a></p>
+    </div>
+  </footer>
+  <script src="../../assets/js/lessons.js"></script>
+  <script src="../../assets/js/site.js"></script>
+</body>
+</html>

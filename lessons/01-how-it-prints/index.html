@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>3D 列印怎麼印出來？｜A竹 3D列印入門</title>
+  <meta name="description" content="看噴頭把塑膠線融化，一層一層疊成立體的東西。">
+  <meta name="theme-color" content="#315E43">
+  <link rel="icon" href="../../assets/img/favicon.png">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body data-lesson="01-how-it-prints">
+  <a class="skip-link" href="#main">跳到主要內容</a>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="../../"><img src="../../assets/img/logo.png" alt="" width="40" height="40"><span>A竹 3D列印入門<small>A竹's 3D列印實驗室</small></span></a>
+      <nav class="site-nav" aria-label="主要導覽">
+        <a href="../../#lessons">所有講義</a>
+        <a href="../../#how">怎麼做的</a>
+        <a href="https://blind-us.github.io/azul-3dlab/" rel="noopener">作品與客製</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container lesson">
+    <header class="lesson-hero">
+      <p class="breadcrumb"><a href="../../">首頁</a> ／ <span data-lesson-no></span></p>
+      <h1>3D 列印怎麼印出來？</h1>
+      <p class="lesson-lead">就像用熱熔膠槍畫畫：把塑膠線融化，一條一條畫、一層一層疊。</p>
+    </header>
+
+    <section id="idea" class="split">
+      <div class="split-text">
+        <h2>噴頭在做什麼？</h2>
+        <ol class="steps" id="idea-steps">
+          <li><strong>送線</strong>齒輪把一捲塑膠線往噴頭裡推。</li>
+          <li><strong>融化</strong>噴頭加熱到約 220 °C，塑膠變軟。</li>
+          <li><strong>畫線</strong>噴嘴擠出細細一條，邊走邊畫出一層。</li>
+          <li><strong>疊層</strong>一層畫完就往上一層，重複到完成。</li>
+        </ol>
+      </div>
+      <div class="split-visual">
+        <div class="widget" data-widget="print-sim" data-steps="idea-steps">
+          <p class="widget-title">看噴頭印一個小花瓶</p>
+        </div>
+      </div>
+    </section>
+
+    <section id="points">
+      <h2>三個重點</h2>
+      <div class="cards">
+        <article class="card">
+          <p class="card-icon" aria-hidden="true">🧵</p>
+          <h3>耗材就是塑膠線</h3>
+          <p>一捲一捲賣，像很粗的釣魚線，有很多顏色和材質。</p>
+        </article>
+        <article class="card">
+          <p class="card-icon" aria-hidden="true">📏</p>
+          <h3>一層非常薄</h3>
+          <p>常用設定是一層 0.2 mm，大約兩張影印紙疊起來。</p>
+        </article>
+        <article class="card">
+          <p class="card-icon" aria-hidden="true">⏱️</p>
+          <h3>所以要印很久</h3>
+          <p>10 cm 高的東西，一層 0.2 mm，就要畫 500 層。</p>
+        </article>
+      </div>
+      <aside class="callout warn"><p class="callout-title">注意安全</p><p>噴頭約 220 °C，列印時不要用手碰噴頭和剛印好的地方。</p></aside>
+    </section>
+
+    <section id="quiz">
+      <h2>考考你</h2>
+      <div class="quiz" data-widget="quiz">
+        <p class="quiz-q">3D 印表機是怎麼把東西做出來的？</p>
+        <div class="quiz-options">
+          <button type="button" data-correct>一層一層往上疊</button>
+          <button type="button">把一整塊塑膠削掉</button>
+          <button type="button">把塑膠倒進模具裡</button>
+        </div>
+        <p class="quiz-explain" hidden>這種一層一層加上去的做法叫「積層製造」。家用機最常見的是 FDM，就是這頁的噴頭擠料方式。</p>
+      </div>
+    </section>
+
+    <section id="sources">
+      <details class="sources">
+        <summary>資料來源</summary>
+        <ul>
+          <li>逐層列印的流程：<a href="https://wiki.bambulab.com/en/a1/manual/intro-a1" rel="noopener">拓竹 Wiki｜A1 機器介紹</a>（擷取 2026-11-01）</li>
+          <li>噴頭溫度約 220 °C：<a href="https://github.com/bambulab/BambuStudio/blob/79df7ae309be398ed30c9f397c13c9911c2edc57/resources/profiles/BBL/filament/Bambu%20PLA%20Basic%20%40BBL%20A1.json" rel="noopener">Bambu Studio 預設檔｜Bambu PLA Basic @BBL A1</a></li>
+          <li>一層 0.2 mm：<a href="https://github.com/bambulab/BambuStudio/blob/79df7ae309be398ed30c9f397c13c9911c2edc57/resources/profiles/BBL/process/0.20mm%20Standard%20%40BBL%20A1.json" rel="noopener">Bambu Studio 預設檔｜0.20mm Standard @BBL A1</a></li>
+          <li>熱熔膠槍、釣魚線、影印紙：生活比喻，方便想像。</li>
+        </ul>
+      </details>
+    </section>
+    <!-- TODO(作者): 可以補一段自己的印表機實際列印的短影片或照片 -->
+
+    <nav class="lesson-pager" data-pager aria-label="上一頁與下一頁"></nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span data-year>2026</span> A竹's 3D列印實驗室｜這個網站由 AI 依照 <a href="https://github.com/Blind-Us/azul-3dprint-notes/blob/main/CLAUDE.md" rel="noopener">CLAUDE.md</a> 的規則製作。</p>
+      <p><a href="https://www.instagram.com/azul_3dlab/" rel="noopener">Instagram @azul_3dlab</a>・<a href="https://github.com/Blind-Us/azul-3dprint-notes" rel="noopener">GitHub 原始碼</a></p>
+    </div>
+  </footer>
+  <script src="../../assets/js/lessons.js"></script>
+  <script src="../../assets/js/site.js"></script>
+</body>
+</html>

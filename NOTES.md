@@ -14,26 +14,26 @@
 
 | 編號 | slug | `notes/` | 頁面 | `lessons.js` |
 |---|---|---|---|---|
-| 01 | `01-fdm-workflow` | ✅ | ✅ | published |
-| 02 | `02-design-for-printing` | ✅ | ✅ | published |
-| 03 | `03-slicing-basics` | ✅ | ✅ | published |
-| 04 | `04-first-layer` | ✅ | ✅ | published |
-| 05 | `05-choosing-filament` | — | — | planned |
-| 06 | `06-post-processing` | — | — | planned |
+| 01 | `01-how-it-prints` | ✅ | ✅ | published |
+| 02 | `02-filament-types` | ✅ | ✅ | published |
+| 03 | `03-model-to-print` | — | — | planned |
+| 04 | `04-what-is-slicing` | — | — | planned |
+| 05 | `05-first-print-tips` | — | — | planned |
 
-- `python tools/check_site.py`：全部通過（2026-11-09）。
-- 網站：已上線 https://blind-us.github.io/azul-3dprint-notes/ （GitHub Pages，`main`／根目錄，2026-11-09 開啟）。
+- 2026-11-09 改版成新手入門版（原因見 `log.md`）。
+- `python tools/check_site.py`：全部通過。
+- 網站：https://blind-us.github.io/azul-3dprint-notes/ （改版尚未推上去）
 
 ## 下次從這裡開始
 
-- 依 `CLAUDE.md` 第 6 節新增 05「耗材怎麼選」：先查官方資料、寫 notes 大綱給作者看，再做頁面。
+- 依 `CLAUDE.md` 第 6 節新增 03「從模型到成品要幾步？」（用 `picker` 元件，五個步驟）。
 
 ## 待辦
 
-- [ ] 作者補照片（頁面裡的 `TODO(作者)`）：01 從建模到成品的實際流程、02 作品或配合件、04 第一層「正常／太低／太高」對照。
-- [ ] 05：先把 PLA、PETG、TPU 的官方資料登記到 `sources/official-sources.md`，再寫 `notes/05-choosing-filament.md`。
-- [ ] 06：等作者說明實際用的後處理工具與步驟再寫，不要自己補。
+- [ ] 作者補照片或影片（頁面裡的 `TODO(作者)`）：01 自己的印表機實際列印、02 四種耗材的實物。
+- [ ] 作者依自己的經驗確認 02 六角形的分數。
+- [ ] 04「切片是什麼？」可以考慮做一個新元件：一個模型被切成一層一層的動畫。
 
 ## 還沒決定／要問作者
 
-- 05 要不要放 TPU 的列印參數？要先確認 A1 的官方 TPU 預設，還有作者自己有沒有印過。
+- 05 要不要加「第一層長怎樣才對」的照片對照？需要作者自己拍。

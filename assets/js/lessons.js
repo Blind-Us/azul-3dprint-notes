@@ -1,107 +1,58 @@
 /* =========================================================
-   講義清單：全站唯一資料來源（規則見 CLAUDE.md 第 5 節）
-   - 首頁卡片、講義頁標籤、上一篇／下一篇都由這裡產生
-   - 陣列順序 = 學習順序，新條目加在最後
-   - status: "published" 已發布｜"planned" 規劃中（不需要資料夾）
-   - 格式必須是合法 JSON（鍵加雙引號、不要結尾逗號、不要註解），檢查腳本才讀得到
+   講義清單：全站唯一資料來源（CLAUDE.md 第 5 節）
+   - 首頁卡片、講義頁編號、上一頁／下一頁都從這裡產生。
+   - 陣列內容必須是合法 JSON（鍵加雙引號、沒有結尾逗號、陣列裡不寫註解），
+     因為 tools/check_site.py 會用 JSON 讀取。
+   - 順序就是閱讀順序，新條目加在最後。
    ========================================================= */
-
-window.AZUL_STAGES = ["總覽", "建模", "切片", "列印", "材料", "後處理"];
-
 window.AZUL_LESSONS = [
   {
     "no": "01",
-    "slug": "01-fdm-workflow",
-    "title": "從點子到成品：FDM 列印工作流",
-    "summary": "先看懂整條路：建模、切片、列印、取件到後處理，每一步各自決定成品的什麼。",
-    "stage": "總覽",
-    "level": "入門",
-    "minutes": 8,
-    "tags": [
-      "FDM",
-      "Bambu A1",
-      "工作流"
-    ],
+    "slug": "01-how-it-prints",
+    "icon": "🖨️",
+    "title": "3D 列印怎麼印出來？",
+    "summary": "看噴頭把塑膠線融化，一層一層疊成立體的東西。",
+    "minutes": 3,
     "status": "published",
     "updated": "2026-11-09"
   },
   {
     "no": "02",
-    "slug": "02-design-for-printing",
-    "title": "為列印而設計：懸空、方向與配合間隙",
-    "summary": "畫圖時就想好列印方向、懸空角度和孔軸間隙，少印幾次失敗品。",
-    "stage": "建模",
-    "level": "入門",
-    "minutes": 12,
-    "tags": [
-      "Fusion 360",
-      "懸空",
-      "公差"
-    ],
+    "slug": "02-filament-types",
+    "icon": "🧵",
+    "title": "耗材怎麼分？",
+    "summary": "PLA、PETG、TPU、ABS 差在哪？用六角形圖比比看。",
+    "minutes": 4,
     "status": "published",
     "updated": "2026-11-09"
   },
   {
     "no": "03",
-    "slug": "03-slicing-basics",
-    "title": "切片入門：看懂 0.20mm Standard",
-    "summary": "從 Bambu Studio 官方預設檔認識層高、牆、頂底層和填充，知道什麼時候該改。",
-    "stage": "切片",
-    "level": "入門",
-    "minutes": 10,
-    "tags": [
-      "Bambu Studio",
-      "層高",
-      "填充"
-    ],
-    "status": "published",
-    "updated": "2026-11-09"
-  },
-  {
-    "no": "04",
-    "slug": "04-first-layer",
-    "title": "第一層與附著：列印失敗先查這裡",
-    "summary": "第一層壞了整件就會壞。依症狀檢查板面、調平與噴頭固定。",
-    "stage": "列印",
-    "level": "入門",
-    "minutes": 10,
-    "tags": [
-      "第一層",
-      "PEI 板",
-      "排錯"
-    ],
-    "status": "published",
-    "updated": "2026-11-09"
-  },
-  {
-    "no": "05",
-    "slug": "05-choosing-filament",
-    "title": "耗材怎麼選：PLA、PETG、TPU",
-    "summary": "依用途選材料：外觀、韌性、耐熱與彈性的取捨。",
-    "stage": "材料",
-    "level": "入門",
-    "minutes": 10,
-    "tags": [
-      "PLA",
-      "PETG",
-      "TPU"
-    ],
+    "slug": "03-model-to-print",
+    "icon": "🧩",
+    "title": "從模型到成品要幾步？",
+    "summary": "找模型、切片、列印、取下，五步看懂整個流程。",
+    "minutes": 3,
     "status": "planned",
     "updated": "2026-11-09"
   },
   {
-    "no": "06",
-    "slug": "06-post-processing",
-    "title": "後處理：去支撐、打磨與試裝",
-    "summary": "把印好的零件變成能交出去的成品。",
-    "stage": "後處理",
-    "level": "進階",
-    "minutes": 12,
-    "tags": [
-      "支撐",
-      "打磨",
-      "試裝"
-    ],
+    "no": "04",
+    "slug": "04-what-is-slicing",
+    "icon": "🔪",
+    "title": "切片是什麼？",
+    "summary": "電腦怎麼把模型切成一層一層，告訴印表機怎麼走。",
+    "minutes": 3,
+    "status": "planned",
+    "updated": "2026-11-09"
+  },
+  {
+    "no": "05",
+    "slug": "05-first-print-tips",
+    "icon": "✅",
+    "title": "第一次列印要注意什麼？",
+    "summary": "開印前檢查三件事，避免第一次就失敗。",
+    "minutes": 3,
     "status": "planned",
     "updated": "2026-11-09"
   }
