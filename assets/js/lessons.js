@@ -51,9 +51,9 @@ window.AZUL_LESSONS = [
     "slug": "05-first-print-tips",
     "icon": "✅",
     "title": "第一次列印要注意什麼？",
-    "summary": "開印前檢查三件事，避免第一次就失敗。",
+    "summary": "開印前檢查五件事，避免第一次就失敗。",
     "minutes": 3,
-    "status": "planned",
+    "status": "published",
     "updated": "2026-11-10"
   }
 ];

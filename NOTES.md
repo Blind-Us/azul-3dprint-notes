@@ -15,25 +15,26 @@
 | 編號 | slug | `notes/` | 頁面 | `lessons.js` | 右邊的圖 |
 |---|---|---|---|---|---|
 | 01 | `01-how-it-prints` | ✅ | ✅ | published | `print-sim` 噴頭動畫 |
-| 02 | `02-filament-types` | ✅ | ✅ | published | `radar` 六角形雷達圖 |
+| 02 | `02-filament-types` | ✅ | ✅ | published | `radar` 可疊加的六角形雷達圖 |
 | 03 | `03-model-to-print` | ✅ | ✅ | published | `flow` 五格畫面輪播 |
 | 04 | `04-model-parts` | ✅ | ✅ | published | `parts` 模型剖面 |
-| 05 | `05-first-print-tips` | — | — | planned | 還沒決定 |
+| 05 | `05-first-print-tips` | ✅ | ✅ | published | `precheck` 開印前檢查 |
 
 - 2026-11-10：照作者回饋改成「簡報式」：拿掉副標、小標題、元件標題和說明小字；01 拿掉「注意安全」；03 改用畫面輪播；新增 04；來源全部換成拓竹中文 Wiki（原因見 `log.md`）。
+- 2026-11-10（第二次）：02 六角形改成可疊加的開關、分數改從官方等級換算，比較表加「要注意」；03 切片畫面改成路線細線；04 換成作者指定的比喻；新增 05。
 - `python tools/check_site.py`：全部通過。
 - 網站：https://blind-us.github.io/azul-3dprint-notes/
 
 ## 下次從這裡開始
 
-- 依 `CLAUDE.md` 第 6 節新增 05「第一次列印要注意什麼？」（作者說「列印注意事項一樣保持」）。開工前先給作者看 notes 大綱，並問右邊要畫什麼。
-- 中文 Wiki 可能用得到的頁面：`/zh/a1/manual/faq`（取件、耗材）、`/zh/software/bambu-studio/layer-height`（層高，W9 還沒用）。
+- 01–05 都完成了。之後要加新頁，照 `CLAUDE.md` 第 6 節 SOP；第 13 節的範例是「06 噴嘴要怎麼選？」，作者還沒決定要不要做。
+- 中文 Wiki 還沒用到的頁面：`/zh/software/bambu-studio/layer-height`（W9）。
 
 ## 待辦
 
-- [ ] 作者補照片或影片（頁面裡的 `TODO(作者)`）：01 實際列印、02 四種耗材實物、03 Bambu Studio 切片截圖、04 切開的模型。
-- [ ] 作者依自己的經驗確認 02 六角形的分數。
+- [ ] 作者補照片或影片（頁面裡的 `TODO(作者)`）：01 實際列印、02 四種耗材實物、03 Bambu Studio 切片截圖、04 切開的模型、05 第一層好／不好的對照。
+- [ ] 作者依自己的經驗確認 02 六角形的分數，特別是官方沒寫、用經驗起點補的格子（見 `notes/02-filament-types.md` 標 * 的分數）。
 
 ## 還沒決定／要問作者
 
-- 05 要不要加「第一層長怎樣才對」的照片對照？需要作者自己拍。
+- 02 的「PLA 耗材放久受潮會變脆」是作者的經驗，官方 Wiki 只寫 PLA「易碎」；要不要保留這句的寫法？

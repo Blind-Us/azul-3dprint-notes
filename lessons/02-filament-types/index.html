@@ -31,20 +31,20 @@
     <section id="idea" class="split">
       <div class="split-text">
         <ol class="steps" id="idea-steps">
-          <li><strong>點材料</strong>按鈕可以切換四種耗材。</li>
+          <li><strong>點材料</strong>每個按鈕都是開關，可以同時打開好幾種。</li>
           <li><strong>看形狀</strong>越往外，代表那一項越強。</li>
-          <li><strong>對照 PLA</strong>虛線是 PLA，方便你比較。</li>
+          <li><strong>比顏色</strong>每種材料固定一個顏色，疊在一起比。</li>
         </ol>
       </div>
       <div class="split-visual">
-        <div class="widget" data-widget="radar" data-axes="好印程度,硬挺,耐摔,耐熱,彈性,便宜" data-max="5" data-ref="PLA">
-          <div class="radar-options" role="group" aria-label="選擇耗材">
-            <button type="button" data-series="PLA" data-values="5,4,2,1,1,5" data-note="最好印、最便宜，但怕熱，夏天放車上會變形。新手首選。">PLA</button>
-            <button type="button" data-series="PETG" data-values="4,3,4,3,2,4" data-note="比 PLA 耐摔、也比較耐熱，適合真的要拿來用的東西。">PETG</button>
-            <button type="button" data-series="TPU" data-values="2,1,5,2,5,3" data-note="軟軟的、有彈性，可以印手機殼、止滑墊，但比較難印。">TPU</button>
-            <button type="button" data-series="ABS" data-values="2,3,4,4,1,4" data-note="耐熱又耐摔，但容易翹、有氣味，A1 不建議印大件。">ABS</button>
+        <div class="widget" data-widget="radar" data-axes="好上手,硬挺,耐摔,彈性,耐熱,不易翹" data-max="5">
+          <div class="radar-options" role="group" aria-label="選擇要比較的耗材">
+            <button type="button" data-series="PLA" data-values="5,4,3,1,1,5" data-on>PLA</button>
+            <button type="button" data-series="PETG" data-values="3,3,5,3,3,5" data-on>PETG</button>
+            <button type="button" data-series="TPU" data-values="1,1,5,5,2,4">TPU</button>
+            <button type="button" data-series="ABS" data-values="3,3,5,3,4,1">ABS</button>
           </div>
-          <!-- TODO(作者): 依自己印過的經驗調整分數 -->
+          <!-- TODO(作者): 依自己印過的經驗確認分數 -->
         </div>
       </div>
     </section>
@@ -52,12 +52,12 @@
     <section id="points">
       <h2>一張表看差別</h2>
       <div class="table-wrap"><table>
-        <thead><tr><th>材料</th><th>摸起來像</th><th>適合做什麼</th><th>A1 能印嗎</th></tr></thead>
+        <thead><tr><th>材料</th><th>摸起來像</th><th>適合做什麼</th><th>要注意</th></tr></thead>
         <tbody>
-          <tr><td>PLA</td><td>硬硬的塑膠玩具</td><td>公仔、擺飾、模型</td><td>✅ 可以，新手首選</td></tr>
-          <tr><td>PETG</td><td>寶特瓶那種硬塑膠</td><td>收納盒、掛勾、零件</td><td>✅ 可以</td></tr>
-          <tr><td>TPU</td><td>軟軟的橡膠</td><td>手機殼、止滑墊</td><td>✅ 可以</td></tr>
-          <tr><td>ABS</td><td>樂高積木</td><td>要耐熱的零件</td><td>⚠️ 不建議印大件</td></tr>
+          <tr><td>PLA</td><td>硬硬的塑膠玩具</td><td>公仔、擺飾、模型</td><td>怕熱、比較脆；耗材放久受潮會變脆</td></tr>
+          <tr><td>PETG</td><td>寶特瓶那種硬塑膠</td><td>收納盒、掛勾、零件</td><td>容易牽絲，受潮更嚴重</td></tr>
+          <tr><td>TPU</td><td>軟軟的橡膠</td><td>手機殼、止滑墊</td><td>最難印，線太軟不好送，要先烘乾</td></tr>
+          <tr><td>ABS</td><td>樂高積木</td><td>要耐熱的零件</td><td>容易翹，A1 不建議印大件</td></tr>
         </tbody>
       </table></div>
       <aside class="callout warn"><p class="callout-title">注意安全</p><p>ABS 加熱時會有刺激性氣味，一定要在通風的地方印。</p></aside>
@@ -80,8 +80,12 @@
       <details class="sources">
         <summary>資料來源</summary>
         <ul>
+          <li>六角形依官方說法換算（低＝1、中＝3、高＝5）：好上手看「使用難度」、彈性看「靈活性」、耐摔看「耐用性」、不易翹看「收縮／翹曲」：<a href="https://wiki.bambulab.com/zh/knowledge-sharing/filament-guide-beginners" rel="noopener">拓竹 Wiki｜FDM 3D 列印耗材的入門指南</a>（擷取 2026-11-10）</li>
+          <li>硬挺和耐熱：PLA 彎曲強度 76 MPa、ABS 62 MPa；耐熱（HDT）PLA 57 °C、ABS 87 °C：<a href="https://wiki.bambulab.com/zh/filament/abs_asa_pc" rel="noopener">拓竹 Wiki｜ABS／ASA／PC 使用指南</a>（擷取 2026-11-10）</li>
+          <li>TPU 柔軟、有彈性、耐磨抗衝擊，比 PLA、PETG 難印：<a href="https://wiki.bambulab.com/zh/knowledge-sharing/tpu-printing-guide" rel="noopener">拓竹 Wiki｜TPU 列印指南</a>（擷取 2026-11-10）</li>
+          <li>PETG 受潮會拉絲；TPU 一定要先烘乾：<a href="https://wiki.bambulab.com/zh/filament/petg" rel="noopener">拓竹 Wiki｜PETG 使用指南</a>、<a href="https://wiki.bambulab.com/zh/filament/beginner" rel="noopener">耗材新手入門指南</a>（擷取 2026-11-10）</li>
           <li>A1 適合 PLA、PETG、TPU；ABS 不建議印大件、加熱有刺激性氣體：<a href="https://wiki.bambulab.com/zh/a1/manual/faq" rel="noopener">拓竹 Wiki｜A1 常見問答（FAQ）</a>（擷取 2026-11-10）</li>
-          <li>六角形分數（1–5 分）、「摸起來像」和用途：一般常見的相對比較（經驗起點），不是實驗數據，不同品牌會不一樣。</li>
+          <li>經驗起點（官方沒寫的格子）：PETG 和 TPU 的硬挺、耐熱，TPU 的不易翹，以及「PLA 耗材放久受潮會變脆」。「摸起來像」和用途是生活比喻。分數是相對比較，不是實驗數據。</li>
         </ul>
       </details>
     </section>

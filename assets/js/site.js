@@ -61,7 +61,7 @@
     var count = $("#lesson-count");
     if (count) {
       var p = published().length;
-      count.textContent = "已完成 " + p + " 頁・準備中 " + (LESSONS.length - p) + " 頁";
+      count.textContent = "已完成 " + p + " 頁" + (LESSONS.length > p ? "・準備中 " + (LESSONS.length - p) + " 頁" : "");
     }
     grid.textContent = "";
     LESSONS.forEach(function (lesson) {
@@ -360,18 +360,32 @@
         } };
       });
 
-      // ② 切片：模型被切成一層一層
-      scene("切片：模型被切成一層一層", function (g) {
-        var layers = vase(g, 160, 214, 14, "fl-layer");
-        var knife = svgEl("line", { x1: 100, x2: 220, y1: 0, y2: 0, class: "fl-knife" }, g);
+      // ② 切片：模型變成噴頭要走的路線（一條沒有寬度的線，一層一層來回）
+      scene("切片：模型變成噴頭要走的路線", function (g) {
+        var BASE = 214, LH = 14, CXs = 160;
+        var solid = svgEl("g", null, g);
+        vase(solid, CXs, BASE, LH, "fl-layer");
+        var d = "";
+        VASE.forEach(function (h, i) {
+          var y = (BASE - LH * i - LH / 2).toFixed(1);
+          var a = i % 2 ? CXs + h : CXs - h, b = i % 2 ? CXs - h : CXs + h;
+          d += (i ? " L" : "M") + a + "," + y + " L" + b + "," + y;
+        });
+        var path = svgEl("path", { d: d, class: "fl-toolpath" }, g);
+        var dot = svgEl("circle", { r: 3.5, class: "fl-tip" }, g);
+        var len = 0;
         return { enter: function () {
-          tween(1600, function (p) {
-            var a = Math.min(1, p / 0.55), b = Math.max(0, (p - 0.55) / 0.45);
-            knife.setAttribute("transform", "translate(0," + lerp(66, 214, a).toFixed(1) + ")");
-            knife.setAttribute("opacity", p < 0.6 ? "1" : "0");
-            layers.forEach(function (r, i) {
-              r.setAttribute("transform", "translate(0," + (-i * 5 * b).toFixed(1) + ")");
-            });
+          if (!len) { try { len = path.getTotalLength(); } catch (e) { len = 1200; } }
+          path.setAttribute("stroke-dasharray", len.toFixed(1));
+          tween(2600, function (p) {
+            var fade = Math.min(1, p / 0.25);
+            solid.setAttribute("opacity", (1 - fade * 0.88).toFixed(2));
+            var q = Math.max(0, (p - 0.15) / 0.85);
+            path.setAttribute("stroke-dashoffset", (len * (1 - q)).toFixed(1));
+            var at = { x: 0, y: 0 };
+            try { at = path.getPointAtLength(len * q); } catch (e) {}
+            dot.setAttribute("cx", at.x.toFixed(1)); dot.setAttribute("cy", at.y.toFixed(1));
+            dot.setAttribute("opacity", q > 0 && q < 1 ? "1" : "0");
           });
         } };
       });
@@ -541,23 +555,122 @@
       }
     },
 
-    /* 六角形雷達圖：一次看一種材料，虛線是對照組（data-ref）。
-       按鈕寫 data-series（名稱）、data-values（分數，順序同 data-axes）、data-note（一句話結論）。 */
+    /* 開印前檢查 precheck：同一台印表機，依序亮起要檢查的地方（列印板、桌面、導軌、耗材、第一層）。
+       data-steps 填左邊步驟清單 <ol> 的 id，順序固定是這五步；點步驟也能切換。 */
+    precheck: function (root) {
+      var stepItems = stepsOf(root);
+      var tw = makeTween();
+      var svg = svgEl("svg", { viewBox: "0 0 320 240", class: "ck-svg", role: "img" });
+      var title = svgEl("title", null, svg);
+      var table = svgEl("rect", { x: 10, y: 216, width: 300, height: 10, rx: 3, class: "ck-table" }, svg);
+      var pr = svgEl("g", null, svg);
+      svgEl("rect", { x: 40, y: 200, width: 220, height: 16, rx: 4, class: "ck-frame" }, pr);
+      svgEl("rect", { x: 60, y: 194, width: 180, height: 6, rx: 2, class: "ck-rail" }, pr);
+      svgEl("rect", { x: 240, y: 40, width: 12, height: 160, rx: 3, class: "ck-frame" }, pr);
+      svgEl("rect", { x: 56, y: 40, width: 196, height: 10, rx: 3, class: "ck-frame" }, pr);
+      var railJunk = svgEl("g", null, pr);
+      svgEl("polygon", { points: "212,194 220,186 226,190 222,194", class: "ck-junk" }, railJunk);
+      svgEl("circle", { cx: 204, cy: 192, r: 2.5, class: "ck-junk" }, railJunk);
+      var bed = svgEl("g", null, pr);
+      svgEl("rect", { x: 70, y: 184, width: 124, height: 10, rx: 2, class: "ck-bed" }, bed);
+      var layer = svgEl("line", { x1: 86, y1: 182, x2: 86, y2: 182, class: "ck-layer" }, bed);
+      var plateJunk = svgEl("g", null, bed);
+      svgEl("rect", { x: 150, y: 172, width: 16, height: 12, rx: 3, class: "ck-junk" }, plateJunk);
+      svgEl("circle", { cx: 100, cy: 182, r: 3, class: "ck-smudge" }, plateJunk);
+      svgEl("circle", { cx: 116, cy: 183, r: 2, class: "ck-smudge" }, plateJunk);
+      var head = svgEl("g", { transform: "translate(127,50)" }, pr);
+      svgEl("rect", { x: -12, y: 0, width: 24, height: 26, rx: 3, class: "ck-head" }, head);
+      svgEl("polygon", { points: "-6,26 6,26 2,34 -2,34", class: "ck-nozzle" }, head);
+      svgEl("circle", { cx: 284, cy: 92, r: 22, class: "ck-spool" }, pr);
+      svgEl("circle", { cx: 284, cy: 92, r: 7, class: "ck-hub" }, pr);
+      var lineOk = svgEl("path", { d: "M266,80 C220,30 160,20 133,50", class: "ck-fil" }, pr);
+      var lineBad = svgEl("path", { d: "M266,80 C240,60 250,40 236,44 C222,48 232,66 214,60 C196,54 210,36 190,34 C165,32 150,30 133,50", class: "ck-fil is-bad" }, pr);
+      var ring = svgEl("ellipse", { class: "ck-ring" }, svg);
+      var RINGS = [[132, 182, 74, 18], [160, 222, 156, 14], [150, 194, 100, 14], [258, 70, 50, 42], [132, 176, 74, 22]];
+      var NAMES = ["列印板清空、擦乾淨", "印表機放在平穩的桌上", "床台和導軌沒有異物", "耗材沒有打結", "開印後盯著第一層"];
+      function clean() {
+        pr.setAttribute("transform", "");
+        plateJunk.setAttribute("opacity", "0");
+        railJunk.setAttribute("opacity", "0");
+        bed.setAttribute("transform", "");
+        lineBad.setAttribute("opacity", "0");
+        lineOk.setAttribute("opacity", "1");
+        layer.setAttribute("x2", "86");
+        head.setAttribute("transform", "translate(127,50)");
+      }
+      var ENTER = [
+        function () { tw.run(2200, function (p) { plateJunk.setAttribute("opacity", (1 - Math.max(0, Math.min(1, (p - 0.35) / 0.4))).toFixed(2)); }); },
+        function () { tw.run(2200, function (p) {
+          var a = p < 0.7 ? 3.5 * Math.sin(p * 6 * Math.PI) * (1 - p / 0.7) : 0;
+          pr.setAttribute("transform", "rotate(" + a.toFixed(2) + ",160,216)");
+        }); },
+        function () { tw.run(2600, function (p) {
+          railJunk.setAttribute("opacity", p < 0.35 ? "1" : (1 - Math.min(1, (p - 0.35) / 0.2)).toFixed(2));
+          var x = p > 0.5 ? 24 * Math.sin((p - 0.5) / 0.5 * 2 * Math.PI) : 0;
+          bed.setAttribute("transform", "translate(" + x.toFixed(1) + ",0)");
+        }); },
+        function () { lineOk.setAttribute("opacity", "0"); tw.run(2000, function (p) {
+          var q = Math.max(0, Math.min(1, (p - 0.4) / 0.35));
+          lineBad.setAttribute("opacity", (1 - q).toFixed(2));
+          lineOk.setAttribute("opacity", q.toFixed(2));
+        }); },
+        function () { tw.run(2600, function (p) {
+          var x = lerp(86, 178, p);
+          layer.setAttribute("x2", x.toFixed(1));
+          head.setAttribute("transform", "translate(" + x.toFixed(1) + ",148)");
+        }); }
+      ];
+      root.appendChild(svg);
+      var controls = el("div", { className: "widget-controls fl-controls" });
+      var prevBtn = el("button", { type: "button", className: "btn ghost", "aria-label": "上一項" }, "‹");
+      var nextBtn = el("button", { type: "button", className: "btn ghost", "aria-label": "下一項" }, "›");
+      var dots = el("div", { className: "fl-dots" });
+      var dotBtns = NAMES.map(function (nm, i) {
+        var d = el("button", { type: "button", className: "fl-dot", "aria-label": "第 " + (i + 1) + " 項：" + nm });
+        d.addEventListener("click", function () { stopAuto(); show(i); });
+        dots.appendChild(d);
+        return d;
+      });
+      controls.appendChild(prevBtn); controls.appendChild(dots); controls.appendChild(nextBtn);
+      root.appendChild(controls);
+
+      var cur = 0, timer = 0, auto = false;
+      function show(i) {
+        cur = (i + NAMES.length) % NAMES.length;
+        var r = RINGS[cur];
+        ring.setAttribute("cx", r[0]); ring.setAttribute("cy", r[1]); ring.setAttribute("rx", r[2]); ring.setAttribute("ry", r[3]);
+        dotBtns.forEach(function (d, k) { d.setAttribute("aria-current", k === cur ? "step" : "false"); });
+        stepItems.forEach(function (li, k) { li.classList.toggle("is-active", k === cur); });
+        title.textContent = "開印前檢查：" + NAMES[cur];
+        clean();
+        ENTER[cur]();
+        window.clearTimeout(timer);
+        if (auto && !REDUCE) timer = window.setTimeout(function () { show(cur + 1); }, 3600);
+      }
+      function stopAuto() { auto = false; window.clearTimeout(timer); }
+      prevBtn.addEventListener("click", function () { stopAuto(); show(cur - 1); });
+      nextBtn.addEventListener("click", function () { stopAuto(); show(cur + 1); });
+      stepItems.forEach(function (li, k) {
+        li.classList.add("is-clickable");
+        li.addEventListener("click", function () { stopAuto(); show(k); });
+      });
+      show(0);
+      if (!REDUCE && "IntersectionObserver" in window) {
+        var io = new IntersectionObserver(function (entries) {
+          if (entries.some(function (e) { return e.isIntersecting; })) { io.disconnect(); auto = true; show(cur); }
+        }, { threshold: 0.4 });
+        io.observe(svg);
+      }
+    },
+
+    /* 六角形雷達圖：按鈕是開關，可以同時打開好幾種材料疊在一起比。
+       每個按鈕依順序固定一個顏色（rd-c1～rd-c4），關掉別的也不會換色。
+       按鈕寫 data-series（名稱）、data-values（分數，順序同 data-axes）、data-on（預設打開）。 */
     radar: function (root) {
       var axes = (root.getAttribute("data-axes") || "").split(",");
       var max = Number(root.getAttribute("data-max") || 5);
-      var refName = root.getAttribute("data-ref") || "";
       var buttons = $$("[data-series]", root);
       if (!axes.length || !buttons.length) return;
-      var series = buttons.map(function (b) {
-        return {
-          name: b.getAttribute("data-series"),
-          values: b.getAttribute("data-values").split(",").map(Number),
-          note: b.getAttribute("data-note") || "",
-          button: b
-        };
-      });
-      var ref = series.filter(function (s) { return s.name === refName; })[0];
       var CX = 170, CY = 150, R = 100, n = axes.length;
       function pt(i, v) {
         var a = -Math.PI / 2 + (i * 2 * Math.PI) / n, r = (R * v) / max;
@@ -579,76 +692,72 @@
         var y = l[1] + (l[1] < CY - 40 ? -2 : l[1] > CY + 40 ? 12 : 4);
         svgEl("text", { x: l[0].toFixed(1), y: y.toFixed(1), "text-anchor": anchor, class: "rd-label" }, svg).textContent = name;
       });
-      var refPoly = svgEl("polygon", { class: "rd-ref" }, svg);
-      var shape = svgEl("polygon", { class: "rd-shape" }, svg);
-      var dots = axes.map(function () {
-        var g = svgEl("g", null, svg);
-        var dot = svgEl("circle", { r: 4.5, class: "rd-dot" }, g);
-        var hit = svgEl("circle", { r: 14, class: "rd-hit" }, g);
-        var tip = svgEl("title", null, hit);
-        return { dot: dot, hit: hit, tip: tip };
-      });
+      var layer = svgEl("g", null, svg);
 
-      var legend = el("p", { className: "rd-legend" });
-      var summary = el("p", { className: "sr-only", "aria-live": "polite" });
-      var scores = el("ul", { className: "rd-scores", "aria-label": "各項分數" });
+      var series = buttons.map(function (b, k) {
+        var s = {
+          name: b.getAttribute("data-series"),
+          values: b.getAttribute("data-values").split(",").map(Number),
+          button: b,
+          cls: "rd-c" + (k + 1),
+          on: b.hasAttribute("data-on")
+        };
+        s.g = svgEl("g", { class: "rd-series " + s.cls }, layer);
+        svgEl("polygon", { points: pts(s.values), class: "rd-shape" }, s.g);
+        s.values.forEach(function (v, i) {
+          var p = pt(i, v);
+          svgEl("circle", { cx: p[0].toFixed(1), cy: p[1].toFixed(1), r: 4.5, class: "rd-dot" }, s.g);
+          var hit = svgEl("circle", { cx: p[0].toFixed(1), cy: p[1].toFixed(1), r: 12, class: "rd-hit" }, s.g);
+          svgEl("title", null, hit).textContent = s.name + "｜" + axes[i] + "：" + v + " / " + max;
+        });
+        b.classList.add("chip-btn", "rd-toggle", s.cls);
+        b.insertBefore(el("span", { className: "rd-swatch", "aria-hidden": "true" }), b.firstChild);
+        return s;
+      });
+      if (!series.some(function (s) { return s.on; })) series[0].on = true;
+
       var options = $(".radar-options", root) || buttons[0].parentNode;
       options.insertAdjacentElement("afterend", svg);
-      svg.insertAdjacentElement("afterend", legend);
-      legend.insertAdjacentElement("afterend", summary);
-      summary.insertAdjacentElement("afterend", scores);
+      var table = el("table", { className: "rd-table" });
+      var wrap = el("div", { className: "table-wrap rd-table-wrap" });
+      wrap.appendChild(table);
+      svg.insertAdjacentElement("afterend", wrap);
 
-      var cur = series[0].values.slice(), raf = 0;
-      function draw(values, s) {
-        shape.setAttribute("points", pts(values));
-        values.forEach(function (v, i) {
-          var p = pt(i, v);
-          dots[i].dot.setAttribute("cx", p[0].toFixed(1)); dots[i].dot.setAttribute("cy", p[1].toFixed(1));
-          dots[i].hit.setAttribute("cx", p[0].toFixed(1)); dots[i].hit.setAttribute("cy", p[1].toFixed(1));
-          dots[i].tip.textContent = s.name + "｜" + axes[i] + "：" + s.values[i] + " / " + max;
+      function render() {
+        var on = series.filter(function (s) { return s.on; });
+        series.forEach(function (s) {
+          s.button.setAttribute("aria-pressed", String(s.on));
+          s.g.setAttribute("visibility", s.on ? "visible" : "hidden");
         });
-      }
-      function select(s) {
-        series.forEach(function (x) { x.button.setAttribute("aria-pressed", String(x === s)); });
-        var showRef = ref && ref !== s;
-        refPoly.setAttribute("points", ref ? pts(ref.values) : "");
-        refPoly.setAttribute("visibility", showRef ? "visible" : "hidden");
-        title.textContent = s.name + " 的能力六角形：" + axes.map(function (a, i) { return a + " " + s.values[i]; }).join("、");
-
-        legend.textContent = "";
-        var k1 = el("span"); k1.appendChild(el("span", { className: "rd-key", "aria-hidden": "true" })); k1.appendChild(document.createTextNode("實線：" + s.name));
-        legend.appendChild(k1);
-        if (showRef) {
-          var k2 = el("span"); k2.appendChild(el("span", { className: "rd-key is-ref", "aria-hidden": "true" })); k2.appendChild(document.createTextNode("虛線：" + ref.name + "（對照）"));
-          legend.appendChild(k2);
-        }
-        summary.textContent = "";
-        summary.appendChild(el("strong", null, s.name + "："));
-        summary.appendChild(document.createTextNode(s.note));
-        scores.textContent = "";
+        title.textContent = "能力六角形：" + on.map(function (s) { return s.name; }).join("、");
+        table.textContent = "";
+        var head = el("tr");
+        head.appendChild(el("th", null, "項目"));
+        on.forEach(function (s) {
+          var th = el("th");
+          th.appendChild(el("span", { className: "rd-swatch " + s.cls, "aria-hidden": "true" }));
+          th.appendChild(document.createTextNode(s.name));
+          head.appendChild(th);
+        });
+        var thead = el("thead"); thead.appendChild(head); table.appendChild(thead);
+        var tbody = el("tbody");
         axes.forEach(function (a, i) {
-          var li = el("li");
-          li.appendChild(el("span", null, a));
-          var v = s.values[i];
-          li.appendChild(el("span", { className: "rd-meter", "aria-label": v + " / " + max }, new Array(v + 1).join("●") + new Array(max - v + 1).join("○")));
-          scores.appendChild(li);
+          var tr = el("tr");
+          tr.appendChild(el("td", null, a));
+          on.forEach(function (s) { tr.appendChild(el("td", null, String(s.values[i]))); });
+          tbody.appendChild(tr);
         });
-
-        window.cancelAnimationFrame(raf);
-        var from = cur.slice(), start = performance.now(), D = REDUCE ? 0 : 350;
-        (function step(now) {
-          var p = D ? Math.min(1, (now - start) / D) : 1;
-          var e = 1 - Math.pow(1 - p, 3);
-          cur = from.map(function (v, i) { return lerp(v, s.values[i], e); });
-          draw(cur, s);
-          if (p < 1) raf = window.requestAnimationFrame(step);
-        })(start);
+        table.appendChild(tbody);
       }
       series.forEach(function (s) {
-        s.button.classList.add("chip-btn");
-        s.button.addEventListener("click", function () { select(s); });
+        s.button.addEventListener("click", function () {
+          var count = series.filter(function (x) { return x.on; }).length;
+          if (s.on && count === 1) return; // 至少留一個
+          s.on = !s.on;
+          render();
+        });
       });
-      select(series[0]);
+      render();
     }
   };
 

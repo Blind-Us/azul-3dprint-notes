@@ -4,6 +4,11 @@
    ========================================================= */
 
 :root {
+  /* 圖表分類色（dataviz 預設色盤前四色，已驗證色盲可分辨；依順序固定給項目，不輪換） */
+  --series-1: #2a78d6;
+  --series-2: #eb6834;
+  --series-3: #1baf7a;
+  --series-4: #eda100;
   /* 色彩 tokens（與 CLAUDE.md 第 9 節同步） */
   --bg: #F7F8F2;
   --surface: #FFFFFF;
@@ -218,16 +223,20 @@ tbody tr:last-child td { border-bottom: 0; }
 .rd-grid.is-outer { stroke: var(--muted); }
 .rd-axis { stroke: var(--border); stroke-width: 1; }
 .rd-label { fill: var(--ink); font-size: 13px; font-weight: 600; }
-.rd-ref { fill: none; stroke: var(--muted); stroke-width: 2; stroke-dasharray: 5 4; }
-.rd-shape { fill: var(--brand); fill-opacity: 0.22; stroke: var(--brand); stroke-width: 2; stroke-linejoin: round; }
-.rd-dot { fill: var(--brand); stroke: var(--surface); stroke-width: 2; }
 .rd-hit { fill: transparent; cursor: help; }
-.rd-legend { display: flex; flex-wrap: wrap; gap: 6px 16px; justify-content: center; font-size: 0.88rem; color: var(--muted); margin: 6px 0 0; }
-.rd-key { display: inline-block; width: 22px; height: 0; vertical-align: middle; margin-right: 6px; border-top: 3px solid var(--brand); }
-.rd-key.is-ref { border-top: 2px dashed var(--muted); }
-.rd-scores { list-style: none; padding: 0; margin: 12px 0 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px 16px; font-size: 0.92rem; }
-.rd-scores li { display: flex; justify-content: space-between; gap: 8px; border-bottom: 1px dashed var(--border); padding: 2px 0; }
-.rd-meter { color: var(--brand); letter-spacing: 1px; }
+.rd-c1 { --rd: var(--series-1); }
+.rd-c2 { --rd: var(--series-2); }
+.rd-c3 { --rd: var(--series-3); }
+.rd-c4 { --rd: var(--series-4); }
+.rd-shape { fill: var(--rd); fill-opacity: 0.14; stroke: var(--rd); stroke-width: 2.5; stroke-linejoin: round; }
+.rd-dot { fill: var(--rd); stroke: var(--surface); stroke-width: 2; }
+.rd-swatch { display: inline-block; width: 12px; height: 12px; border-radius: 3px; background: var(--rd); margin-right: 6px; vertical-align: -1px; }
+.rd-toggle[aria-pressed="false"] .rd-swatch { background: transparent; box-shadow: inset 0 0 0 2px var(--rd); }
+.chip-btn.rd-toggle[aria-pressed="true"] { background: var(--surface); color: var(--ink); border-color: var(--rd); box-shadow: inset 0 0 0 1px var(--rd); }
+.rd-table-wrap { margin-top: 10px; }
+.rd-table { font-size: 0.88rem; }
+.rd-table th, .rd-table td { padding: 6px 8px; text-align: center; }
+.rd-table th:first-child, .rd-table td:first-child { text-align: left; }
 
 /* 流程圖 flow（03） */
 .fl-svg { display: block; width: 100%; background: var(--bg); border-radius: var(--radius-sm); }
@@ -239,7 +248,8 @@ tbody tr:last-child td { border-bottom: 0; }
 .fl-nozzle { fill: var(--ink); }
 .fl-wire { fill: var(--lime-soft); stroke: var(--brand); stroke-width: 2; }
 .fl-layer { fill: var(--brand); }
-.fl-knife { stroke: var(--ink); stroke-width: 2; stroke-dasharray: 6 4; }
+.fl-toolpath { fill: none; stroke: var(--ink); stroke-width: 1.2; stroke-linejoin: round; }
+.fl-tip { fill: var(--brand); }
 .fl-arrow { fill: none; stroke: var(--brand); stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
 .fl-path { fill: none; stroke: var(--border); stroke-width: 3; stroke-dasharray: 6 6; }
 .fl-file { fill: var(--surface); stroke: var(--brand); stroke-width: 2; }
@@ -267,6 +277,23 @@ tbody tr:last-child td { border-bottom: 0; }
 .pt-part.is-on.pt-infill line { stroke-width: 2.5; }
 .pt-part.is-on.pt-support line { stroke: var(--ink); }
 
+/* 開印前檢查 precheck（05） */
+.ck-svg { display: block; width: 100%; background: var(--bg); border-radius: var(--radius-sm); }
+.ck-table { fill: var(--accent); }
+.ck-frame { fill: var(--muted); }
+.ck-rail { fill: var(--ink); }
+.ck-bed { fill: var(--surface); stroke: var(--ink); stroke-width: 2; }
+.ck-head { fill: var(--surface); stroke: var(--ink); stroke-width: 2; }
+.ck-nozzle { fill: var(--ink); }
+.ck-spool { fill: var(--lime); stroke: var(--brand); stroke-width: 3; }
+.ck-hub { fill: var(--surface); stroke: var(--brand); stroke-width: 2; }
+.ck-fil { fill: none; stroke: var(--brand); stroke-width: 2; }
+.ck-fil.is-bad { stroke: var(--error); }
+.ck-junk { fill: var(--error); }
+.ck-smudge { fill: var(--muted); opacity: 0.6; }
+.ck-layer { stroke: var(--brand); stroke-width: 4; stroke-linecap: round; }
+.ck-ring { fill: none; stroke: var(--brand); stroke-width: 2.5; stroke-dasharray: 6 5; }
+
 /* ---------- 響應式 ---------- */
 @media (max-width: 860px) {
   .split { grid-template-columns: minmax(0, 1fr); gap: 20px; }
@@ -278,7 +305,6 @@ tbody tr:last-child td { border-bottom: 0; }
   .lesson-pager { grid-template-columns: minmax(0, 1fr); }
   .lesson-pager .next { grid-column: 1; }
   .site-nav a { padding: 6px 10px; }
-  .rd-scores { grid-template-columns: minmax(0, 1fr); }
   table { font-size: 0.9rem; }
   th, td { padding: 10px 8px; }
   th { white-space: normal; }

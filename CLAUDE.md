@@ -96,11 +96,11 @@ azul-3dprint-notes/
 
 ```json
 {
-  "no": "05",
-  "slug": "05-first-print-tips",
-  "icon": "✅",
-  "title": "第一次列印要注意什麼？",
-  "summary": "開印前檢查三件事，避免第一次就失敗。",
+  "no": "06",
+  "slug": "06-choose-nozzle",
+  "icon": "🔩",
+  "title": "噴嘴要怎麼選？",
+  "summary": "0.4 mm 是標準，什麼時候要換別的？",
   "minutes": 3,
   "status": "planned",
   "updated": "2026-11-10"
@@ -160,7 +160,8 @@ azul-3dprint-notes/
 - **畫面自己說話（作者 2026-11-10 的糾正）。** 不加副標（`.lesson-lead`）、`#idea` 小標題、元件標題（`.widget-title`）、圖下說明小字（`.note`）或「點這裡看看」之類的操作提示。檢查腳本會擋。
 - **圖要真的畫出那件事。** 右邊的圖要讓人看到「這一步長什麼樣子」，不能只是 emoji 加一段文字（03 原本的 emoji 選擇器就是反例）。
 - **能用圖就不用字。** 每頁正文（不含資料來源）**最多 400 個中文字**，超過就刪字或改成圖、表、動畫。
-- **術語要翻成白話。** 第一次出現的術語要用生活比喻解釋，例如「噴頭就像熱熔膠槍」「耗材就是一捲塑膠線」。
+- **術語要翻成白話。** 第一次出現的術語要用生活比喻解釋，例如「噴頭就像熱熔膠槍」「耗材就是一捲塑膠線」。作者指定過的比喻（例如 04 的外牆＝磁磚、填充＝鋼筋水泥、支撐＝鷹架、橋接＝天橋）不要自己換掉。
+- **比較表要寫缺點。** 比較材料或做法時，除了「適合做什麼」，也要有一欄「要注意」，寫新手最容易踩的坑（例如 PETG 會牽絲、TPU 最難印）。
 - **不放參數名稱。** `wall_loops`、`layer_height` 這種設定名稱不出現在網頁上；要提數字時，只提新手需要知道的一個（例如「一層約 0.2 mm」），並用比喻讓它有感覺。
 - **句子短。** 一句不超過 25 字，一段不超過 2 行。用「你」跟讀者說話。
 - 使用繁體中文和台灣用語（列印、耗材、噴頭、列印板）；中文一律全形標點，程式碼、網址和英文維持半形。
@@ -170,7 +171,8 @@ azul-3dprint-notes/
 | 類別 | 定義 | 寫法 |
 |---|---|---|
 | **官方數值** | 來自**拓竹官方 Wiki 中文版**（網址有 `/zh/`，例如 `https://wiki.bambulab.com/zh/a1/manual/faq`） | 直接寫，並在 `#sources` 列出處（代號見 `sources/official-sources.md`） |
-| **經驗起點／比較** | 一般常見的說法或相對比較，例如六角形雷達圖的 1–5 分 | 在 `#sources` 寫「經驗起點：相對比較，不是實驗數據」（不要在圖下面加小字） |
+| **經驗起點／比較** | 一般常見的說法或相對比較 | 在 `#sources` 寫「經驗起點：相對比較，不是實驗數據」（不要在圖下面加小字） |
+| **換算分數** | 圖表上的 1–5 分，例如六角形雷達圖 | **先從官方等級換算**（低＝1、中＝3、高＝5，或官方數字的高低），官方沒寫的格子才用經驗起點；換算方式和哪幾格是經驗，都寫在 `#sources` |
 | **禁止** | 沒有來源、卻寫得像保證的數字 | 不准出現。不確定就不寫，或在回覆中問作者 |
 
 ### 8.3 不可捏造
@@ -202,6 +204,7 @@ azul-3dprint-notes/
 | `--border` | `#DCE3D7` | 邊框、圖表格線 |
 | `--accent` | `#EDB97B` | 橘：安全提示、準備中 |
 | `--hot` | `#D9623B` | 加熱、融化（只用在跟「熱」有關的圖） |
+| `--series-1`～`--series-4` | `#2a78d6` `#eb6834` `#1baf7a` `#eda100` | 圖表分類色（藍、橘、青綠、黃），依項目順序固定分配，不輪換、不拿來當別的用途 |
 
 - **圖解**：用 inline SVG 或 `site.js` 的元件，顏色用 CSS class。不使用 AI 生成的假照片。
 - **emoji** 可以當卡片小圖示，但每頁的主要視覺（`#idea` 右邊）必須是元件或 SVG 圖。
@@ -277,19 +280,18 @@ azul-3dprint-notes/
 <div class="widget" data-widget="print-sim" data-steps="idea-steps"></div>
 ```
 
-**六角形雷達圖 `radar`**：一次顯示一個項目，`data-ref` 的項目會畫成虛線當對照。分數放在按鈕上，順序和 `data-axes` 一樣；`data-note` 是一句話結論。
+**六角形雷達圖 `radar`**：每個按鈕都是開關，可以同時打開好幾種疊在一起比；每個項目依按鈕順序固定一個顏色（`--series-1`～`4`，最多 4 種）。分數放在按鈕上，順序和 `data-axes` 一樣；`data-on` 是預設打開的項目。圖下面會自動產生分數表，給看不清顏色的人用。
 
 ```html
-<div class="widget" data-widget="radar" data-axes="好印程度,硬挺,耐摔,耐熱,彈性,便宜" data-max="5" data-ref="PLA">
-  <div class="radar-options" role="group" aria-label="選擇耗材">
-    <button type="button" data-series="PLA" data-values="5,4,2,1,1,5" data-note="一句話結論">PLA</button>
+<div class="widget" data-widget="radar" data-axes="好上手,硬挺,耐摔,彈性,耐熱,不易翹" data-max="5">
+  <div class="radar-options" role="group" aria-label="選擇要比較的耗材">
+    <button type="button" data-series="PLA" data-values="5,4,3,1,1,5" data-on>PLA</button>
+    <button type="button" data-series="PETG" data-values="3,3,5,3,3,5">PETG</button>
   </div>
 </div>
 ```
 
-`data-note` 只給螢幕閱讀器讀，畫面上不顯示。
-
-**流程圖 `flow`**：五格畫面輪播（找模型 → 切片 → 送去印 → 等它印 → 取下來），像簡報動畫；左邊步驟會同步標出，點步驟也能切換。
+**流程圖 `flow`**：五格畫面輪播（找模型 → 切片（模型變成一條沒有寬度的路線）→ 送去印 → 等它印 → 取下來），像簡報動畫；左邊步驟會同步標出，點步驟也能切換。
 
 ```html
 <div class="widget" data-widget="flow" data-steps="idea-steps"></div>
@@ -311,9 +313,10 @@ azul-3dprint-notes/
 | `data-widget` | 用途 | 用在 |
 |---|---|---|
 | `print-sim` | 列印原理動畫 | 01 |
-| `radar` | 六角形能力比較（最多 6 個軸，一次看一個） | 02 |
+| `radar` | 六角形能力比較（最多 6 個軸、4 個項目，可疊加） | 02 |
 | `flow` | 五步流程畫面輪播 | 03 |
 | `parts` | 模型剖面（外牆、填充、支撐、橋接） | 04 |
+| `precheck` | 開印前檢查：同一台印表機依序圈出要檢查的地方 | 05 |
 | `picker` | 點選項切換說明面板（只在文字真的比圖清楚時用） | 目前沒用到 |
 | `quiz` | 考考你 | 每一頁 |
 
@@ -350,7 +353,7 @@ azul-3dprint-notes/
 
 | 作者說 | AI 應該做 |
 |---|---|
-| 「新增 05 第一次列印要注意什麼」 | 05 已是 planned → 沿用 `05-first-print-tips`，照第 6 節 SOP 完成 |
+| 「新增 06 噴嘴要怎麼選」 | 先在 `lessons.js` 加 planned 條目 `06-choose-nozzle` → 照第 6 節 SOP 完成 |
 | 「我想加一頁講怎麼選噴嘴」 | 先確認新手真的會問 → 用下一個編號、問句標題建新條目 → 照 SOP 完成 |
 | 「這頁字太多了」 | 先刪重複或進階的內容；還是太多就把文字改成表格、卡片或元件 |
 | 「想要一個新的動畫」 | 在 `site.js` 加元件、在第 10 節登記、在 `log.md` 說明，並跑檢查 |
@@ -360,7 +363,7 @@ azul-3dprint-notes/
 
 交辦時講清楚三件事：**成品、限制、驗收**。
 
-> 請依照 CLAUDE.md 新增「05 第一次列印要注意什麼？」。
-> **成品**：`notes/05-first-print-tips.md` 和 `lessons/05-first-print-tips/index.html`，`lessons.js` 改成 published。
+> 請依照 CLAUDE.md 新增「06 噴嘴要怎麼選？」。
+> **成品**：`notes/06-choose-nozzle.md` 和 `lessons/06-choose-nozzle/index.html`，`lessons.js` 新增條目並改成 published。
 > **限制**：寫給完全沒碰過 3D 列印的人；像簡報一樣，不加副標和說明小字；右邊要有一張真的畫出內容的圖或元件；數字只能用拓竹中文 Wiki 或標明「經驗起點」；需要我親身經驗的地方留 TODO。
 > **驗收**：開工前先給我看 notes 大綱；做完 `python tools/check_site.py` 全部通過、375 px 沒有水平捲軸，`log.md` 和 `NOTES.md` 都已更新。
