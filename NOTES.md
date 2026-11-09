@@ -22,12 +22,11 @@
 | 06 | `06-post-processing` | — | — | planned |
 
 - `python tools/check_site.py`：全部通過（2026-11-09）。
-- 網站：本機完成，尚未推上 GitHub。
+- 網站：已上線 https://blind-us.github.io/azul-3dprint-notes/ （GitHub Pages，`main`／根目錄，2026-11-09 開啟）。
 
 ## 下次從這裡開始
 
-1. 推上 GitHub `Blind-Us/azul-3dprint-notes`，到 Settings → Pages 選 `main`／根目錄，確認線上版首頁和 01–04 都打得開。
-2. 依 `CLAUDE.md` 第 6 節新增 05「耗材怎麼選」。
+- 依 `CLAUDE.md` 第 6 節新增 05「耗材怎麼選」：先查官方資料、寫 notes 大綱給作者看，再做頁面。
 
 ## 待辦
 
