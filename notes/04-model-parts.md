@@ -1,7 +1,7 @@
 ---
 slug: 04-model-parts
 title: 模型裡有哪些部分？
-icon: 🧱
+thumb: 同 #idea 右邊的元件
 minutes: 3
 status: published
 updated: 2026-11-10

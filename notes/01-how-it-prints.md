@@ -1,7 +1,7 @@
 ---
 slug: 01-how-it-prints
 title: 3D 列印怎麼印出來？
-icon: 🖨️
+thumb: 同 #idea 右邊的元件
 minutes: 3
 status: published
 updated: 2026-11-10

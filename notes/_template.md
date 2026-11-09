@@ -1,7 +1,7 @@
 ---
 slug: NN-slug
 title: 與 lessons.js、<h1> 完全相同的問句標題
-icon: 一個 emoji
+thumb: 這一頁 #idea 右邊用的元件名稱（首頁卡片縮圖）
 minutes: 3
 status: draft | published
 updated: YYYY-MM-DD

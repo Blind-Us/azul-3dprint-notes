@@ -35,6 +35,8 @@
   };
   function published() { return LESSONS.filter(function (l) { return l.status === "published"; }); }
   function lerp(a, b, p) { return a + (b - a) * p; }
+  // 首頁卡片的縮圖：同一個元件，只畫圖，不放按鈕、不自動播放
+  function isThumb(root) { return root.hasAttribute("data-thumb"); }
   function stepsOf(root) {
     var list = document.getElementById(root.getAttribute("data-steps") || "");
     return list ? $$("li", list) : [];
@@ -55,6 +57,26 @@
   }
 
   /* ---------- 首頁 ---------- */
+  // 依 lessons.js 的 thumb 建一個縮圖元件，initWidgets() 會把它畫出來
+  function thumbOf(t) {
+    var box = el("div", { className: "lesson-thumb", "data-widget": t.widget, "data-thumb": "", "aria-hidden": "true" });
+    if (t.widget === "radar") {
+      box.setAttribute("data-axes", t.axes);
+      box.setAttribute("data-max", "5");
+      var opts = el("div", { className: "radar-options" });
+      t.series.split(";").forEach(function (pair) {
+        var kv = pair.split("=");
+        opts.appendChild(el("button", { type: "button", "data-series": kv[0], "data-values": kv[1], "data-on": "", tabindex: "-1" }, kv[0]));
+      });
+      box.appendChild(opts);
+    }
+    if (t.widget === "parts") {
+      var p = el("div", { className: "parts-options" });
+      ["walls", "infill", "support", "bridge"].forEach(function (k) { p.appendChild(el("button", { type: "button", "data-part": k, tabindex: "-1" }, k)); });
+      box.appendChild(p);
+    }
+    return box;
+  }
   function renderHome() {
     var grid = $("#lesson-grid");
     if (!grid) return;
@@ -67,7 +89,7 @@
     LESSONS.forEach(function (lesson) {
       var planned = lesson.status !== "published";
       var card = el("article", { className: "lesson-card" + (planned ? " is-planned" : "") });
-      card.appendChild(el("span", { className: "icon", "aria-hidden": "true" }, lesson.icon));
+      if (lesson.thumb && !planned) card.appendChild(thumbOf(lesson.thumb));
       card.appendChild(el("span", { className: "no" }, "講義 " + lesson.no));
       var h3 = el("h3");
       if (planned) h3.textContent = lesson.title;
@@ -97,23 +119,8 @@
       var list = published();
       var i = list.map(function (l) { return l.slug; }).indexOf(slug);
       var prev = list[i - 1], next = list[i + 1];
-      if (prev) {
-        var a = el("a", { href: "../" + prev.slug + "/", className: "prev", rel: "prev" });
-        a.appendChild(el("small", null, "← 上一頁"));
-        a.appendChild(document.createTextNode(prev.title));
-        pager.appendChild(a);
-      }
-      var b;
-      if (next) {
-        b = el("a", { href: "../" + next.slug + "/", className: "next", rel: "next" });
-        b.appendChild(el("small", null, "下一頁 →"));
-        b.appendChild(document.createTextNode(next.title));
-      } else {
-        b = el("a", { href: "../../", className: "next" });
-        b.appendChild(el("small", null, "這是目前最後一頁"));
-        b.appendChild(document.createTextNode("回首頁看看還有什麼"));
-      }
-      pager.appendChild(b);
+      if (prev) pager.appendChild(el("a", { href: "../" + prev.slug + "/", className: "prev", rel: "prev", title: prev.title }, "← 上一頁"));
+      if (next) pager.appendChild(el("a", { href: "../" + next.slug + "/", className: "next", rel: "next", title: next.title }, "下一頁 →"));
     }
 
     // 看到「資料來源」就標記看過了
@@ -299,6 +306,7 @@
       });
       resetBtn.addEventListener("click", function () { stopAuto(); pause(); k = 0; t = 0; render(); });
 
+      if (isThumb(root)) { k = timeline.length - 1; render(); return; }
       render();
       if (!REDUCE && "IntersectionObserver" in window) {
         // 捲到動畫時自動播放一次；使用者自己按過按鈕就不再自動播放
@@ -484,6 +492,7 @@
         li.classList.add("is-clickable");
         li.addEventListener("click", function () { stopAuto(); show(k); });
       });
+      if (isThumb(root)) { show(3); return; }
       show(0);
       if (!REDUCE && "IntersectionObserver" in window) {
         var io = new IntersectionObserver(function (entries) {
@@ -546,6 +555,7 @@
         li.classList.add("is-clickable");
         li.addEventListener("click", function () { stopAuto(); show(k); });
       });
+      if (isThumb(root)) { show(0); Object.keys(groups).forEach(function (k) { groups[k].classList.remove("is-dim"); }); return; }
       show(0);
       if (!REDUCE && "IntersectionObserver" in window) {
         var io = new IntersectionObserver(function (entries) {
@@ -563,6 +573,9 @@
       var svg = svgEl("svg", { viewBox: "0 0 320 240", class: "ck-svg", role: "img" });
       var title = svgEl("title", null, svg);
       var table = svgEl("rect", { x: 10, y: 216, width: 300, height: 10, rx: 3, class: "ck-table" }, svg);
+      var bump = svgEl("g", { opacity: "0" }, svg);
+      svgEl("rect", { x: 140, y: 204, width: 30, height: 12, rx: 3, class: "ck-bump" }, bump);
+      svgEl("rect", { x: 140, y: 204, width: 30, height: 4, rx: 2, class: "ck-bump-top" }, bump);
       var pr = svgEl("g", null, svg);
       svgEl("rect", { x: 40, y: 200, width: 220, height: 16, rx: 4, class: "ck-frame" }, pr);
       svgEl("rect", { x: 60, y: 194, width: 180, height: 6, rx: 2, class: "ck-rail" }, pr);
@@ -590,6 +603,8 @@
       var NAMES = ["列印板清空、擦乾淨", "印表機放在平穩的桌上", "床台和導軌沒有異物", "耗材沒有打結", "開印後盯著第一層"];
       function clean() {
         pr.setAttribute("transform", "");
+        bump.setAttribute("opacity", "0");
+        bump.setAttribute("transform", "");
         plateJunk.setAttribute("opacity", "0");
         railJunk.setAttribute("opacity", "0");
         bed.setAttribute("transform", "");
@@ -600,9 +615,13 @@
       }
       var ENTER = [
         function () { tw.run(2200, function (p) { plateJunk.setAttribute("opacity", (1 - Math.max(0, Math.min(1, (p - 0.35) / 0.4))).toFixed(2)); }); },
-        function () { tw.run(2200, function (p) {
-          var a = p < 0.7 ? 3.5 * Math.sin(p * 6 * Math.PI) * (1 - p / 0.7) : 0;
-          pr.setAttribute("transform", "rotate(" + a.toFixed(2) + ",160,216)");
+        function () { tw.run(3000, function (p) {
+          // 底下墊了一塊東西：機器架在上面像蹺蹺板一樣左右翹；拿走之後平平放好
+          var rock = p < 0.6, lift = rock ? 12 : 12 * (1 - Math.min(1, (p - 0.75) / 0.15));
+          var a = rock ? 6 * Math.sin(p / 0.6 * 3 * Math.PI) : 0;
+          bump.setAttribute("opacity", p < 0.6 ? "1" : (1 - Math.min(1, (p - 0.6) / 0.12)).toFixed(2));
+          bump.setAttribute("transform", "translate(" + (p < 0.6 ? 0 : (p - 0.6) * 300).toFixed(1) + ",0)");
+          pr.setAttribute("transform", "translate(0," + (-lift).toFixed(1) + ") rotate(" + a.toFixed(2) + ",155,216)");
         }); },
         function () { tw.run(2600, function (p) {
           railJunk.setAttribute("opacity", p < 0.35 ? "1" : (1 - Math.min(1, (p - 0.35) / 0.2)).toFixed(2));
@@ -654,6 +673,7 @@
         li.classList.add("is-clickable");
         li.addEventListener("click", function () { stopAuto(); show(k); });
       });
+      if (isThumb(root)) { show(4); return; }
       show(0);
       if (!REDUCE && "IntersectionObserver" in window) {
         var io = new IntersectionObserver(function (entries) {
@@ -714,12 +734,11 @@
         b.insertBefore(el("span", { className: "rd-swatch", "aria-hidden": "true" }), b.firstChild);
         return s;
       });
-      if (!series.some(function (s) { return s.on; })) series[0].on = true;
 
       var options = $(".radar-options", root) || buttons[0].parentNode;
       options.insertAdjacentElement("afterend", svg);
       var table = el("table", { className: "rd-table" });
-      var wrap = el("div", { className: "table-wrap rd-table-wrap" });
+      var wrap = el("div", { className: "sr-only" });
       wrap.appendChild(table);
       svg.insertAdjacentElement("afterend", wrap);
 
@@ -729,7 +748,7 @@
           s.button.setAttribute("aria-pressed", String(s.on));
           s.g.setAttribute("visibility", s.on ? "visible" : "hidden");
         });
-        title.textContent = "能力六角形：" + on.map(function (s) { return s.name; }).join("、");
+        title.textContent = on.length ? "能力六角形：" + on.map(function (s) { return s.name; }).join("、") : "能力六角形：目前沒有選材料";
         table.textContent = "";
         var head = el("tr");
         head.appendChild(el("th", null, "項目"));
@@ -751,8 +770,6 @@
       }
       series.forEach(function (s) {
         s.button.addEventListener("click", function () {
-          var count = series.filter(function (x) { return x.on; }).length;
-          if (s.on && count === 1) return; // 至少留一個
           s.on = !s.on;
           render();
         });

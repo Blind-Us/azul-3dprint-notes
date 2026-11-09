@@ -1,7 +1,7 @@
 ---
 slug: 03-model-to-print
 title: 從模型到成品要幾步？
-icon: 🧩
+thumb: 同 #idea 右邊的元件
 minutes: 3
 status: published
 updated: 2026-11-10

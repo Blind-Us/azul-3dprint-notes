@@ -109,7 +109,9 @@ a.btn:hover { color: var(--surface); }
 .lesson-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: 16px; }
 .lesson-card { position: relative; display: flex; flex-direction: column; gap: 6px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; transition: border-color 150ms, transform 150ms; }
 .lesson-card:hover { border-color: var(--brand); transform: translateY(-2px); }
-.lesson-card .icon { font-size: 2.2rem; line-height: 1; margin-bottom: 6px; }
+.lesson-thumb { pointer-events: none; margin: -6px -6px 8px; }
+.lesson-thumb svg { display: block; width: 100%; height: 150px; }
+.lesson-thumb .widget-controls, .lesson-thumb .radar-options, .lesson-thumb .parts-options, .lesson-thumb .sr-only, .lesson-thumb .ps-label, .lesson-thumb .ps-bed-label { display: none; }
 .lesson-card .no { font-family: var(--mono); color: var(--brand); font-weight: 700; font-size: 0.85rem; }
 .lesson-card h3 { margin: 0; font-size: 1.2rem; }
 .lesson-card h3 a { color: var(--ink); text-decoration: none; }
@@ -118,7 +120,7 @@ a.btn:hover { color: var(--surface); }
 .lesson-card .meta { margin-top: auto; padding-top: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
 .lesson-card.is-planned { background: transparent; border-style: dashed; }
 .lesson-card.is-planned:hover { transform: none; border-color: var(--border); }
-.lesson-card.is-planned h3, .lesson-card.is-planned .icon { opacity: 0.6; }
+.lesson-card.is-planned h3 { opacity: 0.6; }
 .read-mark { position: absolute; top: 18px; right: 18px; font-size: 0.78rem; color: var(--brand); background: var(--lime-soft); padding: 2px 10px; border-radius: 999px; }
 
 
@@ -194,7 +196,6 @@ tbody tr:last-child td { border-bottom: 0; }
 .lesson-pager { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 40px; }
 .lesson-pager a { display: block; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 20px; text-decoration: none; color: var(--ink); transition: border-color 150ms; }
 .lesson-pager a:hover { border-color: var(--brand); }
-.lesson-pager small { display: block; color: var(--muted); }
 .lesson-pager .next { text-align: right; grid-column: 2; }
 
 /* ---------- 互動元件 ---------- */
@@ -292,6 +293,8 @@ tbody tr:last-child td { border-bottom: 0; }
 .ck-junk { fill: var(--error); }
 .ck-smudge { fill: var(--muted); opacity: 0.6; }
 .ck-layer { stroke: var(--brand); stroke-width: 4; stroke-linecap: round; }
+.ck-bump { fill: var(--brand); }
+.ck-bump-top { fill: var(--lime); }
 .ck-ring { fill: none; stroke: var(--brand); stroke-width: 2.5; stroke-dasharray: 6 5; }
 
 /* ---------- 響應式 ---------- */

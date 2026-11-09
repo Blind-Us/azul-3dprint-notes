@@ -1,7 +1,7 @@
 ---
 slug: 02-filament-types
 title: 耗材怎麼分？
-icon: 🧵
+thumb: 同 #idea 右邊的元件
 minutes: 4
 status: published
 updated: 2026-11-10

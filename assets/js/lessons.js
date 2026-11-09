@@ -9,7 +9,7 @@ window.AZUL_LESSONS = [
   {
     "no": "01",
     "slug": "01-how-it-prints",
-    "icon": "🖨️",
+    "thumb": {"widget": "print-sim"},
     "title": "3D 列印怎麼印出來？",
     "summary": "看噴頭把塑膠線融化，一層一層疊成立體的東西。",
     "minutes": 3,
@@ -19,7 +19,7 @@ window.AZUL_LESSONS = [
   {
     "no": "02",
     "slug": "02-filament-types",
-    "icon": "🧵",
+    "thumb": {"widget": "radar", "axes": "好上手,硬挺,耐摔,彈性,耐熱,不易翹", "series": "PLA=5,4,3,1,1,5;PETG=3,3,5,3,3,5;TPU=1,1,5,5,2,4;ABS=3,3,5,3,4,1"},
     "title": "耗材怎麼分？",
     "summary": "PLA、PETG、TPU、ABS 差在哪？用六角形圖比比看。",
     "minutes": 4,
@@ -29,7 +29,7 @@ window.AZUL_LESSONS = [
   {
     "no": "03",
     "slug": "03-model-to-print",
-    "icon": "🧩",
+    "thumb": {"widget": "flow"},
     "title": "從模型到成品要幾步？",
     "summary": "找模型、切片、列印、取下，五步看懂整個流程。",
     "minutes": 3,
@@ -39,7 +39,7 @@ window.AZUL_LESSONS = [
   {
     "no": "04",
     "slug": "04-model-parts",
-    "icon": "🧱",
+    "thumb": {"widget": "parts"},
     "title": "模型裡有哪些部分？",
     "summary": "外牆、填充、支撐、橋接，切開來一次看懂。",
     "minutes": 3,
@@ -49,7 +49,7 @@ window.AZUL_LESSONS = [
   {
     "no": "05",
     "slug": "05-first-print-tips",
-    "icon": "✅",
+    "thumb": {"widget": "precheck"},
     "title": "第一次列印要注意什麼？",
     "summary": "開印前檢查五件事，避免第一次就失敗。",
     "minutes": 3,

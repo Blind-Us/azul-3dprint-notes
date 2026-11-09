@@ -67,7 +67,7 @@ widgets_src = site_js.split("var WIDGETS = {", 1)[-1].split("function initWidget
 WIDGETS = set(re.findall(r'^\s{4}"?([a-z][a-z-]*)"?\s*:\s*function', widgets_src, re.M))
 ok(len(WIDGETS) > 0, "site.js 找不到 WIDGETS 元件清單")
 
-REQUIRED_FIELDS = ["no", "slug", "icon", "title", "summary", "minutes", "status", "updated"]
+REQUIRED_FIELDS = ["no", "slug", "title", "summary", "minutes", "status", "updated"]
 SECTIONS = ["idea", "points", "quiz", "sources"]
 seen = set()
 
@@ -101,6 +101,15 @@ for i, l in enumerate(LESSONS):
 
     # 3. 頁面與清單一致
     ok(f'data-lesson="{slug}"' in html, f'{tag} <body> 缺少 data-lesson="{slug}"')
+    # 首頁縮圖 thumb：用這一頁 #idea 右邊的同一個元件；雷達圖的資料要和頁面完全一樣
+    th = l.get("thumb") or {}
+    page_widget = re.search(r'<div class="split-visual">\s*<div class="widget[^"]*" data-widget="([^"]+)"', html)
+    ok(page_widget and th.get("widget") == page_widget.group(1), f"{tag} lessons.js 的 thumb.widget 要等於頁面 #idea 右邊的元件（{page_widget and page_widget.group(1)}）")
+    if th.get("widget") == "radar":
+        axes = re.search(r'data-widget="radar" data-axes="([^"]+)"', html)
+        ok(axes and axes.group(1) == th.get("axes"), f"{tag} thumb.axes 和頁面的 data-axes 不一樣")
+        page_series = ";".join(f"{n}={v}" for n, v in re.findall(r'data-series="([^"]+)" data-values="([^"]+)"', html))
+        ok(page_series == th.get("series"), f"{tag} thumb.series 和頁面的雷達圖分數不一樣，改分數時兩邊都要改")
     h1 = re.search(r"<h1[^>]*>(.*?)</h1>", html, re.S)
     ok(h1 and h1.group(1).strip() == l["title"], f"{tag} <h1>（{h1 and h1.group(1).strip()}）與 lessons.js title 不一致")
     title = re.search(r"<title>(.*?)</title>", html, re.S)
