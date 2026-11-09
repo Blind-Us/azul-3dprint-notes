@@ -33,7 +33,7 @@ window.AZUL_LESSONS = [
     "title": "從模型到成品要幾步？",
     "summary": "找模型、切片、列印、取下，五步看懂整個流程。",
     "minutes": 3,
-    "status": "planned",
+    "status": "published",
     "updated": "2026-11-09"
   },
   {

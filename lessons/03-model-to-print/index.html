@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>從模型到成品要幾步？｜A竹 3D列印入門</title>
+  <meta name="description" content="找模型、切片、列印、取下，五步看懂整個流程。">
+  <meta name="theme-color" content="#315E43">
+  <link rel="icon" href="../../assets/img/favicon.png">
+  <link rel="stylesheet" href="../../assets/css/style.css">
+</head>
+<body data-lesson="03-model-to-print">
+  <a class="skip-link" href="#main">跳到主要內容</a>
+  <header class="site-header">
+    <div class="container">
+      <a class="brand" href="../../"><img src="../../assets/img/logo.png" alt="" width="40" height="40"><span>A竹 3D列印入門<small>A竹's 3D列印實驗室</small></span></a>
+      <nav class="site-nav" aria-label="主要導覽">
+        <a href="../../#lessons">所有講義</a>
+        <a href="../../#how">怎麼做的</a>
+        <a href="https://blind-us.github.io/azul-3dlab/" rel="noopener">作品與客製</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main" class="container lesson">
+    <header class="lesson-hero">
+      <p class="breadcrumb"><a href="../../">首頁</a> ／ <span data-lesson-no></span></p>
+      <h1>從模型到成品要幾步？</h1>
+      <p class="lesson-lead">五步：找模型、切片、送去印、等它印、取下來。</p>
+    </header>
+
+    <section id="idea" class="split">
+      <div class="split-text">
+        <h2>點一下每一步</h2>
+        <ol class="steps" id="idea-steps">
+          <li><strong>找模型</strong>下載現成的，或自己畫。</li>
+          <li><strong>切片</strong>用軟體切成一層一層。</li>
+          <li><strong>送去印</strong>把檔案傳給印表機。</li>
+          <li><strong>等它印</strong>噴頭一層一層疊上去。</li>
+          <li><strong>取下來</strong>等列印板涼了再拿。</li>
+        </ol>
+      </div>
+      <div class="split-visual">
+        <div class="widget picker" data-widget="picker">
+          <p class="widget-title">每一步在做什麼？</p>
+          <div class="picker-options" role="group" aria-label="選擇步驟">
+            <button type="button" data-pick="model">① 找模型</button>
+            <button type="button" data-pick="slice">② 切片</button>
+            <button type="button" data-pick="send">③ 送去印</button>
+            <button type="button" data-pick="wait">④ 等它印</button>
+            <button type="button" data-pick="remove">⑤ 取下來</button>
+          </div>
+          <div class="picker-panel" data-panel="model"><p class="panel-icon" aria-hidden="true">🧩</p><h3>找模型</h3><p>模型網站有很多免費檔案，例如 MakerWorld；也可以用 Tinkercad 自己畫。</p></div>
+          <div class="picker-panel" data-panel="slice"><p class="panel-icon" aria-hidden="true">🔪</p><h3>切片</h3><p>免費的 Bambu Studio 會把模型切成幾百層，算出噴頭每一層怎麼走。</p></div>
+          <div class="picker-panel" data-panel="send"><p class="panel-icon" aria-hidden="true">📤</p><h3>送去印</h3><p>按「列印」把檔案傳給印表機。A1 要先插好 microSD 卡。</p></div>
+          <div class="picker-panel" data-panel="wait"><p class="panel-icon" aria-hidden="true">⏳</p><h3>等它印</h3><p>小東西幾十分鐘，大東西好幾個小時。前幾分鐘看一下第一層有沒有黏好。</p></div>
+          <div class="picker-panel" data-panel="remove"><p class="panel-icon" aria-hidden="true">✂️</p><h3>取下來</h3><p>等列印板完全涼了再拿，比較不會變形；有支撐就拆掉。</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="points">
+      <h2>三個新名詞</h2>
+      <div class="cards">
+        <article class="card">
+          <p class="card-icon" aria-hidden="true">📦</p>
+          <h3>STL 是什麼？</h3>
+          <p>最常見的 3D 模型檔，就像照片常用 JPG 一樣。</p>
+        </article>
+        <article class="card">
+          <p class="card-icon" aria-hidden="true">🏗️</p>
+          <h3>支撐是什麼？</h3>
+          <p>懸在半空的地方要先印「鷹架」撐著，印完再拆掉。</p>
+        </article>
+        <article class="card">
+          <p class="card-icon" aria-hidden="true">💻</p>
+          <h3>軟體要錢嗎？</h3>
+          <p>不用，Bambu Studio 是免費的切片軟體。</p>
+        </article>
+      </div>
+      <aside class="callout warn"><p class="callout-title">注意安全</p><p>列印中噴頭和列印板都很燙，取件前先等它涼。</p></aside>
+    </section>
+
+    <section id="quiz">
+      <h2>考考你</h2>
+      <div class="quiz" data-widget="quiz">
+        <p class="quiz-q">下載好模型之後，下一步要做什麼？</p>
+        <div class="quiz-options">
+          <button type="button">直接傳給印表機</button>
+          <button type="button" data-correct>先用切片軟體切片</button>
+          <button type="button">把模型印成圖片</button>
+        </div>
+        <p class="quiz-explain" hidden>印表機看不懂模型檔，要先切片，變成一層一層的路線。</p>
+      </div>
+    </section>
+
+    <section id="sources">
+      <details class="sources">
+        <summary>資料來源</summary>
+        <ul>
+          <li>模型 → 切片 → 列印的流程：<a href="https://wiki.bambulab.com/en/a1/manual/intro-a1" rel="noopener">拓竹 Wiki｜A1 機器介紹</a>（擷取 2026-11-01）</li>
+          <li>A1 要插 microSD 卡、等列印板涼了再取件：<a href="https://wiki.bambulab.com/en/a1/manual/faq" rel="noopener">拓竹 Wiki｜A1 常見問題</a>（擷取 2026-11-01）</li>
+          <li>Bambu Studio 免費、開源：<a href="https://github.com/bambulab/BambuStudio" rel="noopener">Bambu Studio 原始碼（GitHub）</a></li>
+          <li>MakerWorld、Tinkercad 只是舉例；列印時間是經驗起點，實際以切片軟體的預估為準。</li>
+        </ul>
+      </details>
+    </section>
+    <!-- TODO(作者): 補一張自己在 Bambu Studio 切片的螢幕截圖 -->
+
+    <nav class="lesson-pager" data-pager aria-label="上一頁與下一頁"></nav>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span data-year>2026</span> A竹's 3D列印實驗室｜這個網站由 AI 依照 <a href="https://github.com/Blind-Us/azul-3dprint-notes/blob/main/CLAUDE.md" rel="noopener">CLAUDE.md</a> 的規則製作。</p>
+      <p><a href="https://www.instagram.com/azul_3dlab/" rel="noopener">Instagram @azul_3dlab</a>・<a href="https://github.com/Blind-Us/azul-3dprint-notes" rel="noopener">GitHub 原始碼</a></p>
+    </div>
+  </footer>
+  <script src="../../assets/js/lessons.js"></script>
+  <script src="../../assets/js/site.js"></script>
+</body>
+</html>

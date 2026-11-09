@@ -16,23 +16,22 @@
 |---|---|---|---|---|
 | 01 | `01-how-it-prints` | ✅ | ✅ | published |
 | 02 | `02-filament-types` | ✅ | ✅ | published |
-| 03 | `03-model-to-print` | — | — | planned |
+| 03 | `03-model-to-print` | ✅ | ✅ | published |
 | 04 | `04-what-is-slicing` | — | — | planned |
 | 05 | `05-first-print-tips` | — | — | planned |
 
-- 2026-11-09 改版成新手入門版（原因見 `log.md`）。
+- 2026-11-09 改版成新手入門版（原因見 `log.md`）；03 依 SOP 新增。
 - `python tools/check_site.py`：全部通過。
-- 網站：https://blind-us.github.io/azul-3dprint-notes/ （改版尚未推上去）
+- 網站：https://blind-us.github.io/azul-3dprint-notes/
 
 ## 下次從這裡開始
 
-- 依 `CLAUDE.md` 第 6 節新增 03「從模型到成品要幾步？」（用 `picker` 元件，五個步驟）。
+- 依 `CLAUDE.md` 第 6 節新增 04「切片是什麼？」。先跟作者確認：要不要做一個新元件（模型被切成一層一層的動畫），還是先用 SVG 圖。
 
 ## 待辦
 
-- [ ] 作者補照片或影片（頁面裡的 `TODO(作者)`）：01 自己的印表機實際列印、02 四種耗材的實物。
+- [ ] 作者補照片或影片（頁面裡的 `TODO(作者)`）：01 自己的印表機實際列印、02 四種耗材的實物、03 自己在 Bambu Studio 切片的截圖。
 - [ ] 作者依自己的經驗確認 02 六角形的分數。
-- [ ] 04「切片是什麼？」可以考慮做一個新元件：一個模型被切成一層一層的動畫。
 
 ## 還沒決定／要問作者
 
