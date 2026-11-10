@@ -368,8 +368,8 @@
         } };
       });
 
-      // ② 切片：模型變成噴頭要走的路線（一條沒有寬度的線，一層一層來回）
-      scene("切片：模型變成噴頭要走的路線", function (g) {
+      // ② 切片：模型變成噴嘴要走的路徑（一條沒有寬度的線，一層一層來回）
+      scene("切片：模型變成噴嘴要走的路徑", function (g) {
         var BASE = 214, LH = 14, CXs = 160;
         var solid = svgEl("g", null, g);
         vase(solid, CXs, BASE, LH, "fl-layer");
