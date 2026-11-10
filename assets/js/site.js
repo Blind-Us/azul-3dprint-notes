@@ -121,6 +121,7 @@
       var prev = list[i - 1], next = list[i + 1];
       if (prev) pager.appendChild(el("a", { href: "../" + prev.slug + "/", className: "prev", rel: "prev", title: prev.title }, "← 上一頁"));
       if (next) pager.appendChild(el("a", { href: "../" + next.slug + "/", className: "next", rel: "next", title: next.title }, "下一頁 →"));
+      else pager.appendChild(el("a", { href: "../../", className: "next" }, "回首頁 →"));
     }
 
     // 看到「資料來源」就標記看過了
