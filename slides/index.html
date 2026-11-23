@@ -1,0 +1,404 @@
+<!doctype html><html lang="zh-Hant-TW"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>從一捲線到第一個成品｜A竹 3D列印入門</title><meta name="description" content="第一次用 3D 印表機，先懂這 5 件事。">
+<link rel="icon" href="../assets/img/favicon.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
+<style>
+*{box-sizing:content-box}
+html,body{margin:0;height:100%;overflow:hidden;background:#0f201a}
+#stage{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform-origin:0 0}
+#stage>section{position:absolute;left:0;top:0;width:1664px;height:792px;opacity:0;visibility:hidden;transition:opacity .35s}
+#stage>section.on{opacity:1;visibility:visible}
+section.on .fragment.visible{opacity:1;transform:none}
+#hint{position:fixed;bottom:10px;left:0;right:0;text-align:center;font:14px system-ui,'Noto Sans TC',sans-serif;color:#9fb8ad;opacity:.8;pointer-events:none;transition:opacity 1s}
+.navzone{position:fixed;top:0;bottom:0;width:50%;cursor:pointer;z-index:1}
+#zl{left:0;cursor:w-resize}#zr{right:0;cursor:e-resize}
+#stage a{position:relative;z-index:2}
+:root {
+  --bg: #F7F8F2;
+  --bg2: #EEF3E4;
+  --ink: #19352B;
+  --body: #3F5A4D;
+  --brand: #315E43;
+  --lime: #D9EDAA;
+  --accent: #EDB97B;
+  --accent-soft: #FBEEDD;
+  --hot: #A8461F;
+  --card: #FDFDFA;
+}
+body { font-family: 'Noto Sans TC', Arial, sans-serif; color: var(--ink); }
+section { background: var(--bg); color: var(--ink); padding: 128px 128px 160px; counter-increment: page; display: flex; flex-direction: column; }
+section.alt { background: var(--bg2); }
+section.dark { background: var(--ink); color: var(--bg); }
+
+h1 { font-size: 104px; font-weight: 900; line-height: 1.1; margin: 0; }
+h2 { font-size: 64px; font-weight: 900; line-height: 1.15; margin: 0; }
+h3 { font-size: 40px; font-weight: 700; line-height: 1.25; margin: 0; }
+p { font-size: 32px; line-height: 1.5; margin: 0; color: var(--body); }
+.eyebrow { font-size: 28px; font-weight: 700; color: var(--brand); margin-bottom: 16px; }
+.small { font-size: 24px; }
+
+/* footer band */
+.foot { position: absolute; left: 128px; bottom: 64px; width: 1664px; display: flex; justify-content: space-between; align-items: center; }
+.foot p { font-size: 24px; color: var(--body); }
+.foot .num::after { content: counter(page) " / 14"; }
+
+/* one filament per slide */
+.mat { display: flex; flex-direction: column; gap: 22px; }
+.mrow { display: flex; gap: 24px; align-items: flex-start; }
+.mrow .k { width: 168px; font-size: 26px; font-weight: 700; color: var(--brand); background: var(--lime); border-radius: 12px; padding: 6px 0; text-align: center; }
+.mrow .v { width: 560px; font-size: 32px; color: var(--ink); }
+.mrow .k.warn { background: var(--accent-soft); color: var(--hot); }
+.pic img.radar { width: 792px; height: 590px; }
+.cmp-row { display: flex; gap: 56px; align-items: center; flex: 1; margin-top: 24px; }
+.cmp-pic { width: 1000px; background: var(--card); border-radius: 28px; padding: 20px; }
+.cmp-pic img { width: 960px; height: 600px; object-fit: contain; }
+.cmp-list { width: 608px; display: flex; flex-direction: column; gap: 20px; }
+.cmp-list p { font-size: 30px; color: var(--ink); }
+
+/* lesson slides */
+.lesson-row { display: flex; gap: 72px; align-items: center; flex: 1; }
+.lesson-text { width: 752px; display: flex; flex-direction: column; }
+.lesson-text h2 { margin-bottom: 40px; }
+.steps { margin: 0; padding-left: 52px; font-size: 32px; line-height: 1.45; color: var(--body); }
+.steps li { margin-top: 18px; }
+.steps b { color: var(--ink); }
+.callout { margin-top: 40px; background: var(--lime); border-radius: 20px; padding: 24px 32px; }
+.callout p { color: var(--ink); font-size: 32px; }
+.callout .big { font-size: 44px; font-weight: 900; color: var(--ink); }
+.pic { width: 840px; background: var(--card); border-radius: 28px; padding: 24px; box-shadow: 0 12px 32px rgba(25,53,43,0.10); }
+.pic img { width: 792px; height: 660px; object-fit: contain; }
+
+/* cover */
+.cover-row { display: flex; gap: 72px; align-items: center; flex: 1; }
+.cover-text { width: 980px; display: flex; flex-direction: column; }
+.cover-text .lead { font-size: 40px; color: #CFE3D6; margin-top: 32px; }
+.cover-text .tag { font-size: 28px; font-weight: 700; color: var(--accent); margin-bottom: 24px; }
+.cover-pic { width: 612px; background: var(--bg); border-radius: 28px; padding: 16px; }
+.cover-pic img { width: 580px; height: 588px; object-fit: contain; }
+.chips { display: flex; gap: 16px; margin-top: 48px; flex-wrap: wrap; }
+.chip { font-size: 28px; font-weight: 700; background: #2C4A3E; color: var(--lime); border-radius: 999px; padding: 10px 26px; }
+.dark .foot p { color: #CFE3D6; }
+.logo { width: 96px; height: 96px; object-fit: contain; margin-bottom: 28px; }
+
+/* quiz */
+.quiz-row { display: flex; gap: 40px; margin-top: 56px; flex: 1; }
+.q { width: 528px; background: var(--card); border-radius: 24px; padding: 36px; display: flex; flex-direction: column; box-shadow: 0 12px 32px rgba(25,53,43,0.08); }
+.q .qno { font-size: 24px; font-weight: 700; color: var(--brand); margin-bottom: 12px; }
+.q h3 { font-size: 36px; margin-bottom: 24px; }
+.q .opt { font-size: 28px; color: var(--body); margin-top: 8px; }
+.q .ans { margin-top: 28px; background: var(--lime); border-radius: 16px; padding: 18px 22px; font-size: 28px; color: var(--ink); }
+.fragment { opacity: 0; transform: translateY(16px); transition: opacity 300ms, transform 300ms; }
+.fragment.visible { opacity: 1; transform: none; }
+
+/* graph */
+.graph { position: relative; width: 1664px; height: 480px; margin-top: 32px; }
+.nodes { display: flex; gap: 24px; margin-top: 130px; margin-left: 12px; }
+.node { width: 184px; background: var(--card); border: 3px solid var(--brand); border-radius: 18px; padding: 18px 8px; display: flex; flex-direction: column; align-items: center; }
+.node.gate { background: var(--accent-soft); border-color: #C77A2E; }
+.node.loop { background: #F1F7E3; }
+.node .n { font-size: 40px; font-weight: 900; color: var(--ink); }
+.node .w { font-size: 26px; font-weight: 700; color: var(--ink); text-align: center; }
+.glabel { position: absolute; font-size: 24px; font-weight: 700; text-align: center; color: var(--hot); }
+.glabel.up { color: var(--brand); }
+.graph-note { display: flex; gap: 24px; margin-top: 24px; }
+.graph-note p { font-size: 28px; background: var(--card); border-radius: 16px; padding: 16px 24px; color: var(--ink); }
+
+/* run log */
+.runs { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 44px; }
+.run { background: var(--card); border-radius: 22px; padding: 26px 32px; box-shadow: 0 10px 28px rgba(25,53,43,0.07); }
+.run .where { font-size: 24px; font-weight: 700; color: var(--brand); margin-bottom: 8px; }
+.run .old { font-size: 28px; color: var(--body); }
+.run .why { font-size: 28px; color: var(--hot); font-weight: 700; margin-top: 4px; }
+.run .new { font-size: 28px; color: var(--ink); font-weight: 700; margin-top: 4px; }
+.final { margin-top: 28px; background: var(--lime); border-radius: 18px; padding: 18px 28px; }
+.final p { font-size: 28px; color: var(--ink); }
+
+/* reflection */
+.flowrow { display: flex; align-items: center; gap: 14px; margin-top: 18px; }
+.flowrow .lab { width: 150px; font-size: 28px; font-weight: 700; color: var(--body); }
+.st { font-size: 28px; font-weight: 700; background: var(--card); border: 2px solid #B9C7B5; border-radius: 14px; padding: 10px 20px; color: var(--ink); }
+.st.new { background: var(--accent-soft); border-color: #C77A2E; }
+.arr { font-size: 28px; color: var(--body); }
+.big-claim { margin-top: 48px; background: var(--ink); border-radius: 24px; padding: 32px 40px; }
+.big-claim p { color: var(--bg); font-size: 34px; }
+.big-claim b { color: var(--lime); }
+</style></head><body>
+<div class="navzone" id="zl" aria-label="上一頁"></div><div class="navzone" id="zr" aria-label="下一頁"></div>
+<div id="stage"><section id="cover" class="dark" data-transition="fade">
+<div class="cover-row">
+<div class="cover-text">
+<img class="logo" src="assets/logo.png" alt="A竹 3D 列印實驗室標誌">
+<p class="tag">A竹's 3D 列印實驗室・新手入門</p>
+<h1>從一捲線到<br>第一個成品</h1>
+<p class="lead">第一次用 3D 印表機，你只需要先懂這 5 件事。</p>
+<div class="chips">
+<p class="chip">怎麼印</p>
+<p class="chip">選耗材</p>
+<p class="chip">切片</p>
+<p class="chip">拆與留</p>
+<p class="chip">開印前</p>
+</div>
+</div>
+<div class="cover-pic"><img src="assets/01-print.gif" alt="噴頭一層一層印出小花瓶的動畫"></div>
+</div>
+<div class="foot"><p>內容整理自 13 個拓竹官方 Wiki 頁面，每頁都附來源</p><p class="num"></p></div>
+
+</section>
+<section id="s01" data-transition="fade">
+<div class="lesson-row">
+<div class="lesson-text">
+<p class="eyebrow">問題 1 / 5</p>
+<h2>3D 列印怎麼印出來？</h2>
+<ol class="steps">
+<li><b>送線</b>　齒輪把塑膠線推進噴頭</li>
+<li><b>融化</b>　加熱到約 220 °C</li>
+<li><b>畫線</b>　擠出細線，畫完一層</li>
+<li><b>疊層</b>　往上一層，重複到完成</li>
+</ol>
+<div class="callout"><p class="big">10 cm ÷ 0.2 mm ＝ 500 層</p><p>一層很薄，所以常常要印好幾個小時</p></div>
+</div>
+<div class="pic"><img src="assets/01-print.gif" alt="噴頭送線、加熱、畫線、疊層印出花瓶的動畫"></div>
+</div>
+<div class="foot"><p><a target="_blank" rel="noopener" href="https://github.com/Blind-Us/azul-3dprint-notes/blob/main/notes/01-how-it-prints.md">Wiki 筆記 01</a>・來源 W1、W6</p><p class="num"></p></div>
+
+</section>
+<section id="s02" class="alt" data-transition="fade">
+<div class="lesson-row">
+<div class="lesson-text">
+<p class="eyebrow">問題 2 / 5・耗材 1 / 4</p>
+<h2>PLA：第一捲選它</h2>
+<div class="mat">
+<div class="mrow"><p class="k">摸起來像</p><p class="v">硬硬的塑膠玩具</p></div>
+<div class="mrow"><p class="k">拿來做</p><p class="v">公仔、擺飾、模型</p></div>
+<div class="mrow"><p class="k">特性</p><p class="v">最好上手，幾乎不翹；夠硬挺</p></div>
+<div class="mrow"><p class="k warn">要注意</p><p class="v">怕熱（約 57 °C 就變形）、比較脆</p></div>
+</div>
+</div>
+<div class="pic"><img class="radar" src="assets/radar-PLA.png" alt="PLA 雷達圖：好上手、不易翹高，彈性、耐熱低"></div>
+</div>
+<div class="foot"><p><a target="_blank" rel="noopener" href="https://github.com/Blind-Us/azul-3dprint-notes/blob/main/notes/02-filament-types.md">Wiki 筆記 02</a>・來源 W10、W15</p><p class="num"></p></div>
+
+</section>
+<section id="petg" data-transition="fade">
+<div class="lesson-row">
+<div class="lesson-text">
+<p class="eyebrow">問題 2 / 5・耗材 2 / 4</p>
+<h2>PETG：天天用的東西</h2>
+<div class="mat">
+<div class="mrow"><p class="k">摸起來像</p><p class="v">寶特瓶那種硬塑膠</p></div>
+<div class="mrow"><p class="k">拿來做</p><p class="v">收納盒、掛勾、零件</p></div>
+<div class="mrow"><p class="k">特性</p><p class="v">耐摔、耐用，也不太會翹</p></div>
+<div class="mrow"><p class="k warn">要注意</p><p class="v">容易牽絲，受潮更嚴重</p></div>
+</div>
+</div>
+<div class="pic"><img class="radar" src="assets/radar-PETG.png" alt="PETG 雷達圖：耐摔、不易翹高"></div>
+</div>
+<div class="foot"><p><a target="_blank" rel="noopener" href="https://github.com/Blind-Us/azul-3dprint-notes/blob/main/notes/02-filament-types.md">Wiki 筆記 02</a>・來源 W10、W16</p><p class="num"></p></div>
+
+</section>
+<section id="tpu" class="alt" data-transition="fade">
+<div class="lesson-row">
+<div class="lesson-text">
+<p class="eyebrow">問題 2 / 5・耗材 3 / 4</p>
+<h2>TPU：軟的、會彈回來</h2>
+<div class="mat">
+<div class="mrow"><p class="k">摸起來像</p><p class="v">軟軟的橡膠</p></div>
+<div class="mrow"><p class="k">拿來做</p><p class="v">手機殼、止滑墊</p></div>
+<div class="mrow"><p class="k">特性</p><p class="v">柔軟有彈性，耐磨抗衝擊</p></div>
+<div class="mrow"><p class="k warn">要注意</p><p class="v">最難印：線太軟不好送，要先烘乾</p></div>
+</div>
+</div>
+<div class="pic"><img class="radar" src="assets/radar-TPU.png" alt="TPU 雷達圖：彈性、耐摔高，好上手、硬挺低"></div>
+</div>
+<div class="foot"><p><a target="_blank" rel="noopener" href="https://github.com/Blind-Us/azul-3dprint-notes/blob/main/notes/02-filament-types.md">Wiki 筆記 02</a>・來源 W12、W14</p><p class="num"></p></div>
+
+</section>
+<section id="abs" data-transition="fade">
+<div class="lesson-row">
+<div class="lesson-text">
+<p class="eyebrow">問題 2 / 5・耗材 4 / 4</p>
+<h2>ABS：要耐熱再選它</h2>
+<div class="mat">
+<div class="mrow"><p class="k">摸起來像</p><p class="v">樂高積木</p></div>
+<div class="mrow"><p class="k">拿來做</p><p class="v">要耐熱的零件</p></div>
+<div class="mrow"><p class="k">特性</p><p class="v">耐熱（約 87 °C）、耐摔</p></div>
+<div class="mrow"><p class="k warn">要注意</p><p class="v">很容易翹，沒外殼的機器別印大件；有刺激性氣味，要通風</p></div>
+</div>
+</div>
+<div class="pic"><img class="radar" src="assets/radar-ABS.png" alt="ABS 雷達圖：耐熱、耐摔高，不易翹低"></div>
+</div>
+<div class="foot"><p><a target="_blank" rel="noopener" href="https://github.com/Blind-Us/azul-3dprint-notes/blob/main/notes/02-filament-types.md">Wiki 筆記 02</a>・來源 W2、W10、W15</p><p class="num"></p></div>
+
+</section>
+<section id="compare" class="alt" data-transition="fade">
+<p class="eyebrow">問題 2 / 5・四種一起比</p>
+<h2>放在一起看，差在哪？</h2>
+<div class="cmp-row">
+<div class="cmp-pic"><img src="assets/radar-ALL.png" alt="PLA、PETG、TPU、ABS 四種耗材疊在一起的六角雷達圖"></div>
+<div class="cmp-list">
+<p><b>PLA</b>　最好上手 → 練習、擺飾</p>
+<p><b>PETG</b>　耐摔又不太翹 → 天天用的東西</p>
+<p><b>TPU</b>　最有彈性 → 軟的東西</p>
+<p><b>ABS</b>　最耐熱 → 但最會翹</p>
+<div class="callout"><p>先想<b>用途</b>，再挑材料。</p></div>
+<p class="small">分數由官方等級換算；官方沒寫的格子是作者經驗。</p>
+</div>
+</div>
+<div class="foot"><p><a target="_blank" rel="noopener" href="https://github.com/Blind-Us/azul-3dprint-notes/blob/main/notes/02-filament-types.md">Wiki 筆記 02</a>・來源 W10、W14、W15</p><p class="num"></p></div>
+
+</section>
+<section id="s03" data-transition="fade">
+<div class="lesson-row">
+<div class="lesson-text">
+<p class="eyebrow">問題 3 / 5</p>
+<h2>從模型到成品要幾步？</h2>
+<ol class="steps">
+<li><b>找模型</b>　下載現成的，或自己畫</li>
+<li><b>切片</b>　算出噴嘴要走的路徑</li>
+<li><b>送去印</b>　把檔案傳給印表機</li>
+<li><b>等它印</b>　一層一層疊上去</li>
+<li><b>取下來</b>　等列印板涼了再拿</li>
+</ol>
+<div class="callout"><p>印表機看不懂模型檔，<b>一定要先切片</b>。</p></div>
+</div>
+<div class="pic"><img src="assets/03-flow.gif" alt="找模型、切片、送去印、等它印、取下來五個畫面輪播"></div>
+</div>
+<div class="foot"><p><a target="_blank" rel="noopener" href="https://github.com/Blind-Us/azul-3dprint-notes/blob/main/notes/03-model-to-print.md">Wiki 筆記 03</a>・來源 W1、W2、W5、S0</p><p class="num"></p></div>
+
+</section>
+<section id="s04" class="alt" data-transition="fade">
+<div class="lesson-row">
+<div class="lesson-text">
+<p class="eyebrow">問題 4 / 5</p>
+<h2>模型裡有哪些部分？</h2>
+<ol class="steps">
+<li><b>外牆</b>　像磁磚，看得到的外表</li>
+<li><b>填充</b>　像鋼筋水泥，一格一格撐住</li>
+<li><b>支撐</b>　像鷹架，印完要拆掉</li>
+<li><b>橋接</b>　像天橋，跨過空隙，要留著</li>
+</ol>
+<div class="callout"><p>要拆的只有<b>支撐</b>，其他都是成品的一部分。</p></div>
+</div>
+<div class="pic"><img src="assets/04-parts.gif" alt="模型剖面圖依序亮起外牆、填充、支撐、橋接"></div>
+</div>
+<div class="foot"><p><a target="_blank" rel="noopener" href="https://github.com/Blind-Us/azul-3dprint-notes/blob/main/notes/04-model-parts.md">Wiki 筆記 04</a>・來源 W5、W6、W7、W8</p><p class="num"></p></div>
+
+</section>
+<section id="s05" data-transition="fade">
+<div class="lesson-row">
+<div class="lesson-text">
+<p class="eyebrow">問題 5 / 5</p>
+<h2>第一次列印要注意什麼？</h2>
+<ol class="steps">
+<li><b>清空列印板</b>　擦乾淨，別用手摸</li>
+<li><b>放穩機器</b>　列印板會前後跑</li>
+<li><b>看看導軌</b>　不能有碎料、工具</li>
+<li><b>順好耗材</b>　線不要打結</li>
+<li><b>盯第一層</b>　要平平黏在板上</li>
+</ol>
+<div class="callout"><p>第一層黏好，後面才會好。</p></div>
+</div>
+<div class="pic"><img src="assets/05-precheck.gif" alt="印表機依序圈出列印板、機台、導軌、耗材、第一層"></div>
+</div>
+<div class="foot"><p><a target="_blank" rel="noopener" href="https://github.com/Blind-Us/azul-3dprint-notes/blob/main/notes/05-first-print-tips.md">Wiki 筆記 05</a>・來源 W1、W2、W11、W12、W13</p><p class="num"></p></div>
+
+</section>
+<section id="quiz" class="alt" data-transition="fade">
+<p class="eyebrow">複習</p>
+<h2>考考你</h2>
+<div class="quiz-row">
+<div class="q">
+<p class="qno">第 1 題</p>
+<h3>想印一個軟軟的手機殼，選哪一種？</h3>
+<p class="opt">A. PLA</p>
+<p class="opt">B. TPU</p>
+<p class="opt">C. ABS</p>
+<p class="ans fragment"><b>B. TPU</b>：有彈性，彎了會彈回來。</p>
+</div>
+<div class="q">
+<p class="qno">第 2 題</p>
+<h3>下載好模型，下一步要做什麼？</h3>
+<p class="opt">A. 直接傳給印表機</p>
+<p class="opt">B. 先用軟體切片</p>
+<p class="opt">C. 印成圖片</p>
+<p class="ans fragment"><b>B. 先切片</b>：印表機只看得懂路徑。</p>
+</div>
+<div class="q">
+<p class="qno">第 3 題</p>
+<h3>印完拆支撐時，橋面也要拆嗎？</h3>
+<p class="opt">A. 要，一起拆掉</p>
+<p class="opt">B. 不用，橋面要留著</p>
+<p class="opt">C. 看心情</p>
+<p class="ans fragment"><b>B. 留著</b>：只有支撐是鷹架。</p>
+</div>
+</div>
+<div class="foot"><p>點一下顯示答案</p><p class="num"></p></div>
+
+</section>
+<section id="graph" data-transition="fade">
+<p class="eyebrow">幕後 1 / 3</p>
+<h2>AI 怎麼把我的資料變成簡報？</h2>
+<div class="graph">
+<svg aria-label="流程圖：八個節點，④⑥⑦ 是檢查點，各有一條退回的箭頭；⑧ 有一條虛線回到 ①" style="position:absolute; left:0; top:0; width:1664px; height:480px;" width="1664" height="480" viewBox="0 0 1664 480" xmlns="http://www.w3.org/2000/svg"><defs><marker id="ah" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#A8461F"/></marker><marker id="ahg" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#315E43"/></marker></defs><path d="M708 282 C708 345 540 345 540 290" fill="none" stroke="#A8461F" stroke-width="4" marker-end="url(#ah)"/><path d="M1124 282 C1124 345 956 345 956 290" fill="none" stroke="#A8461F" stroke-width="4" marker-end="url(#ah)"/><path d="M1372 282 C1372 470 748 470 748 290" fill="none" stroke="#A8461F" stroke-width="4" marker-end="url(#ah)"/><path d="M1560 124 C1560 24 104 24 104 116" fill="none" stroke="#315E43" stroke-width="4" stroke-dasharray="12 10" marker-end="url(#ahg)"/></svg>
+<div class="nodes">
+<div class="node"><p class="n">①</p><p class="w">定讀者</p></div>
+<div class="node"><p class="n">②</p><p class="w">整理筆記</p></div>
+<div class="node loop"><p class="n">③</p><p class="w">查筆記</p></div>
+<div class="node gate"><p class="n">④</p><p class="w">寫重點標來源</p></div>
+<div class="node loop"><p class="n">⑤</p><p class="w">做成頁面</p></div>
+<div class="node gate"><p class="n">⑥</p><p class="w">自動檢查</p></div>
+<div class="node gate"><p class="n">⑦</p><p class="w">新手試讀</p></div>
+<div class="node"><p class="n">⑧</p><p class="w">我來確認</p></div>
+</div>
+<p class="glabel up" style="left:432px; top:62px; width:800px;">我改過的地方寫成規則，下一頁 AI 就會照做</p>
+<p class="glabel" style="left:524px; top:338px; width:200px;">找不到來源</p>
+<p class="glabel" style="left:940px; top:338px; width:200px;">版面錯</p>
+<p class="glabel" style="left:880px; top:420px; width:320px;">看不懂、圖文不合</p>
+</div>
+<div class="graph-note">
+<p><b>第一步</b>　①② 把官方資料整理成 5 篇筆記（知識庫）</p>
+<p><b>第二步</b>　③～⑧ 一個問題做一頁，每頁跑一輪</p>
+</div>
+<div class="foot"><p>橘色＝檢查點・紅線＝不通過就退回</p><p class="num"></p></div>
+
+</section>
+<section id="run" class="alt" data-transition="fade">
+<p class="eyebrow">幕後 2 / 3</p>
+<h2>做的過程中，檢查抓到了什麼？</h2>
+<div class="runs">
+<div class="run"><p class="where">03 切片・在 ⑦ 新手試讀被抓到</p><p class="old">原本：「用軟體切成一層一層」</p><p class="why">問題：畫面是細線路徑，文字對不上</p><p class="new">改成：「算出噴嘴要走的路徑」</p></div>
+<div class="run"><p class="where">02 PLA・在 ④ 來源檢查被抓到</p><p class="old">原本：「耗材放久受潮會變脆」</p><p class="why">問題：官方只寫「易碎」，找不到出處</p><p class="new">改成：「怕熱、比較脆」</p></div>
+<div class="run"><p class="where">02 雷達圖・在 ④ 來源檢查被抓到</p><p class="old">原本：PETG、TPU 每格都有分數</p><p class="why">問題：有幾格官方沒給等級</p><p class="new">改成：這幾格標成「作者經驗」</p></div>
+<div class="run"><p class="where">01、05・在 ⑦ 新手試讀被抓到</p><p class="old">原本：「噴嘴／噴頭」「床台／列印板」混用</p><p class="why">問題：同一個東西兩個名字</p><p class="new">改成：統一叫「噴頭」「列印板」</p></div>
+</div>
+<div class="final"><p><b>最後再對一次</b>：5 篇筆記都對得上 5 個問題・每句重點都找得到來源</p></div>
+<div class="foot"><p><a target="_blank" rel="noopener" href="https://github.com/Blind-Us/azul-3dprint-notes/blob/main/log.md">完整紀錄：log.md</a></p><p class="num"></p></div>
+
+</section>
+<section id="reflect" data-transition="fade">
+<p class="eyebrow">幕後 3 / 3</p>
+<h2>最容易出錯：把資料濃縮成一句話</h2>
+<p style="margin-top:20px">上一頁四個錯有三個出在 ④：多補一句官方沒說的、漏掉經驗值標記、文字跟畫面對不上。</p>
+<div style="margin-top:40px">
+<div class="flowrow"><p class="lab">改之前</p><p class="st">查詢</p><p class="arr">→</p><p class="st">整理</p><p class="arr">→</p><p class="st">生成</p><p class="arr">→</p><p class="st">最後才檢查</p></div>
+<div class="flowrow"><p class="lab">改之後</p><p class="st">查詢</p><p class="arr">→</p><p class="st new">整理＋標記來源</p><p class="arr">→</p><p class="st">生成</p><p class="arr">→</p><p class="st new">自動檢查</p><p class="arr">→</p><p class="st new">新手試讀</p><p class="arr">→</p><p class="st new">寫回規則</p></div>
+</div>
+<div class="big-claim"><p>所以我把檢查從最後一步<b>往前移到 ④</b>：每寫一句就標「官方／計算／經驗」。錯了只改一句，不用重畫整張圖。</p></div>
+<div class="foot"><p><a target="_blank" rel="noopener" href="https://github.com/Blind-Us/azul-3dprint-notes/blob/main/CLAUDE.md">規則手冊 CLAUDE.md</a></p><p class="num"></p></div>
+
+</section>
+</div>
+<div id="hint">點右邊下一頁、點左邊上一頁，也可以用滾輪或方向鍵</div>
+<script>
+const S=[...document.querySelectorAll('#stage>section')],st=document.getElementById('stage');
+let i=Math.max(0,Math.min(S.length-1,(parseInt(location.hash.slice(1))||1)-1)),lock=0;
+function fit(){const k=Math.min(innerWidth/1920,innerHeight/1080);st.style.transform=`scale(${k}) translate(-50%,-50%)`;}
+function show(){S.forEach((s,j)=>s.classList.toggle('on',j===i));history.replaceState(null,'','#'+(i+1));}
+function next(){const f=S[i].querySelector('.fragment:not(.visible)');if(f){f.classList.add('visible');return;}if(i<S.length-1){i++;show();}}
+function prev(){const v=[...S[i].querySelectorAll('.fragment.visible')];if(v.length){v.pop().classList.remove('visible');return;}if(i>0){i--;show();}}
+document.getElementById('zr').onclick=next;document.getElementById('zl').onclick=prev;
+addEventListener('wheel',e=>{e.preventDefault();const t=Date.now();if(t-lock<550||Math.abs(e.deltaY)<4)return;lock=t;e.deltaY>0?next():prev();},{passive:false});
+addEventListener('keydown',e=>{if(['ArrowRight','ArrowDown','PageDown',' ','Enter'].includes(e.key)){e.preventDefault();next();}if(['ArrowLeft','ArrowUp','PageUp','Backspace'].includes(e.key)){e.preventDefault();prev();}if(e.key==='Home'){i=0;show();}if(e.key==='End'){i=S.length-1;show();}});
+let tx=null;addEventListener('touchstart',e=>{tx=e.touches[0].clientX},{passive:true});addEventListener('touchend',e=>{if(tx===null)return;const dx=e.changedTouches[0].clientX-tx;if(Math.abs(dx)>40)dx<0?next():prev();tx=null;});
+addEventListener('hashchange',()=>{const n=(parseInt(location.hash.slice(1))||1)-1;if(n!==i&&n>=0&&n<S.length){i=n;show();}});addEventListener('resize',fit);fit();show();setTimeout(()=>document.getElementById('hint').style.opacity=0,4000);
+</script></body></html>

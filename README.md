@@ -4,9 +4,9 @@
 
 ## 一次帶你看完
 
-👉 **[新手入門簡報：從一捲線到第一個成品](https://claude.ai/artifact/4ebeWohddA1xtC8GT9ZSjt)**
+👉 **[新手入門簡報：從一捲線到第一個成品](https://blind-us.github.io/azul-3dprint-notes/slides/)**
 
-像投影片一樣一頁一頁翻，十分鐘看完：
+像投影片一樣一頁一頁翻（點右邊下一頁、點左邊上一頁，也可以用滾輪），十分鐘看完：
 
 1. 3D 列印怎麼印出來？
 2. 第一捲耗材怎麼選？（PLA、PETG、TPU、ABS 各一頁，最後一起比較）
