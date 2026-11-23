@@ -1,54 +1,56 @@
 # A竹 3D列印入門
 
-「A竹's 3D列印實驗室」的入門網站，寫給**完全沒碰過 3D 列印的人**。每頁只回答一個新手會問的問題，用動畫、圖表和一題小測驗帶你看懂，3 分鐘看完一頁。
+「A竹's 3D列印實驗室」的新手入門，寫給**完全沒碰過 3D 列印的人**。每頁只回答一個新手會問的問題，用動畫、圖表和一題小測驗帶你看懂。
 
-- 網站：https://blind-us.github.io/azul-3dprint-notes/
-- 姊妹站（作品與客製）：https://blind-us.github.io/azul-3dlab/
-- AI 協作規則：[`CLAUDE.md`](CLAUDE.md)（其他 agent 請看 [`AGENTS.md`](AGENTS.md)）
-- 目前進度與待辦：[`NOTES.md`](NOTES.md)
+## 一次帶你看完
 
-## 講義
+👉 **[新手入門簡報：從一捲線到第一個成品](https://claude.ai/artifact/4ebeWohddA1xtC8GT9ZSjt)**
 
-講義列表和完成狀態只維護在 [`assets/js/lessons.js`](assets/js/lessons.js)，網站首頁會自動顯示；目前做到哪見 [`NOTES.md`](NOTES.md)。
+像投影片一樣一頁一頁翻，十分鐘看完：
 
-## 這個專案的設計重點
+1. 3D 列印怎麼印出來？
+2. 第一捲耗材怎麼選？（PLA、PETG、TPU、ABS 各一頁，最後一起比較）
+3. 從模型到成品要幾步？
+4. 模型裡有哪些部分？
+5. 第一次列印要注意什麼？
 
-這個專案的重點是那份規則手冊：寫清楚規則，讓 AI 之後能照同一套方式一直加新頁面。
+最後附三題小測驗，以及「幕後」：AI 怎麼把我的資料變成這份簡報。
 
-1. **寫給誰看**：讀者是完全的新手，所以標題用問句、正文 400 字內、每頁都要有一張圖或一個互動元件。
-2. **像簡報一樣**：標題＋畫面就夠了，不加副標或說明小字，讓畫面自己說話。
-3. **一份清單管全站**：`assets/js/lessons.js` 是唯一資料來源，首頁卡片和上一頁／下一頁都自動產生。
-4. **固定的五個區塊**：問句標題 → 一張圖看懂（左文右圖）→ 重點 → 考考你 → 資料來源。
-5. **內容先行**：先在 `notes/<slug>.md` 寫好文字和來源，再做成網頁。
-6. **可以自動檢查**：`python tools/check_site.py` 會檢查結構、字數、元件名稱和連結，不合規則就會失敗。
-7. **記得做到哪**：`NOTES.md` 記錄目前狀態和下一步，換一個對話也能接手。
+## 講義網站
 
-## 新增一頁（摘要）
+想慢慢看、自己動手點的話，每個問題都有一頁互動講義：
 
-```text
-notes/_template.md        → 複製成 notes/NN-slug.md，先寫內容與來源
-lessons/_template/        → 複製成 lessons/NN-slug/，填入五個區塊
-assets/js/lessons.js      → 新增或更新條目，status 改成 "published"
-python tools/check_site.py → 全部通過
-log.md                    → 在最上方寫紀錄
-NOTES.md                  → 更新狀態、下一步和待辦
-```
+- 網站首頁：https://blind-us.github.io/azul-3dprint-notes/
+- [01 3D 列印怎麼印出來？](https://blind-us.github.io/azul-3dprint-notes/lessons/01-how-it-prints/)：噴頭動畫，一層一層印出小花瓶
+- [02 耗材怎麼分？](https://blind-us.github.io/azul-3dprint-notes/lessons/02-filament-types/)：四種耗材的六角形雷達圖，可以疊在一起比
+- [03 從模型到成品要幾步？](https://blind-us.github.io/azul-3dprint-notes/lessons/03-model-to-print/)：找模型、切片、送去印、等它印、取下來
+- [04 模型裡有哪些部分？](https://blind-us.github.io/azul-3dprint-notes/lessons/04-model-parts/)：外牆、填充、支撐、橋接的剖面圖
+- [05 第一次列印要注意什麼？](https://blind-us.github.io/azul-3dprint-notes/lessons/05-first-print-tips/)：開印前依序檢查的五個地方
 
-完整規則見 [`CLAUDE.md`](CLAUDE.md) 第 6 節。
+## 作品與客製化
 
-## 本機預覽
+想看我印過的作品，或想請我幫你印、幫你設計：
 
-不需要安裝任何東西。在專案根目錄執行：
+- 作品與客製網站：https://blind-us.github.io/azul-3dlab/
+- Instagram：[@azul_3dlab](https://www.instagram.com/azul_3dlab/)
 
-```bash
-python -m http.server 8000
-```
+## 我怎麼和 AI 一起做這些內容
 
-然後打開 http://localhost:8000 。
+分成兩步：
 
-## 技術
+1. **先整理成知識庫**：和 AI 討論讀者是誰、要回答哪些問題，再把拓竹官方 Wiki 整理成 5 篇筆記（[`notes/`](notes/)），每句重點都標上來源。
+2. **再一頁一頁做出來**：每個問題跑一輪「查筆記 → 寫重點並標來源 → 做成頁面 → 自動檢查 → 用新手的眼光試讀 → 我確認」，不通過就退回該修的那一步。
 
-純靜態 HTML／CSS／JavaScript，沒有框架、建置工具或外部依賴，以 GitHub Pages（`main` 分支根目錄）部署。
+幾個一直遵守的原則：
+
+- **寫給新手**：標題用問句、字少圖多，每頁都要有一張圖或一個互動元件。
+- **像簡報一樣**：標題加畫面就夠了，讓畫面自己說話。
+- **每句話都有出處**：官方說法、自己算的、自己的經驗，三種分開標清楚。
+- **被糾正就寫成規則**：我改過的地方寫進 [`CLAUDE.md`](CLAUDE.md)，下一頁 AI 就會照做；修改過程記在 [`log.md`](log.md)。
+
+## 部署
+
+純靜態網頁，以 GitHub Pages（`main` 分支根目錄）部署，推上 `main` 就會更新網站。
 
 ## 來源與授權說明
 
